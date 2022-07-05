@@ -1,14 +1,14 @@
 FROM openwrtorg/rootfs:x86-64
 
+USER root
+
 # Install Server Dependencies 
 RUN mkdir /var/lock && \
-    opkg update && \
-    opkg install \
+    opkg update && opkg install \
     uhttpd \
-    luci luci-ssl \
     php8 \
     php8-cgi
-
+    
 # Install PHP Extensions
 RUN opkg install \
     php8-mod-iconv \
@@ -16,7 +16,6 @@ RUN opkg install \
 
 
 
-USER root
 
 # using exec format so that /sbin/init is proc 1 (see procd docs)
 CMD ["/sbin/init"]
