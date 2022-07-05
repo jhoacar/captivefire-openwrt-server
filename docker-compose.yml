@@ -12,3 +12,4 @@ services:
       - 9000:80
     volumes:
       - ./docker/etc/config:/etc/config
+      - ./public:/app

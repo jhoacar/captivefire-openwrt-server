@@ -1,5 +1,16 @@
+config uhttpd 'captivefire'
+	list listen_http '0.0.0.0:8080'
+	list listen_http '[::]:8080'
+	list listen_https '0.0.0.0:4443'
+	list listen_https '[::]:4443'
+	option redirect_https '1'
+	option home '/app'
+	option index_file '/public/index.php'
+	option index_page '/public/index.php'
+	option error_page '/public/index.php'
+	list interpreter ".php=/usr/bin/php-cgi"
 
-config uhttpd 'main'
+config uhttpd 'luci'
 	list listen_http '0.0.0.0:80'
 	list listen_http '[::]:80'
 	list listen_https '0.0.0.0:443'

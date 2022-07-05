@@ -1,10 +1,20 @@
 FROM openwrtorg/rootfs:x86-64
 
+# Install Server Dependencies 
 RUN mkdir /var/lock && \
     opkg update && \
-    opkg install uhttpd-mod-lua luci luci-ssl && \
-    uci set uhttpd.main.interpreter='.lua=/usr/bin/lua' && \
-    uci commit uhttpd
+    opkg install \
+    uhttpd \
+    luci luci-ssl \
+    php8 \
+    php8-cgi
+
+# Install PHP Extensions
+RUN opkg install \
+    php8-mod-iconv \
+    php8-mod-phar
+
+
 
 USER root
 
