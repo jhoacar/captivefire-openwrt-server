@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  
+  captivefire-uhttpd:
+    build:
+      context: '.'
+    image: captivefire-uhttpd
+    container_name: captivefire
+    restart: always
+    ports:
+      - 9000:80
+    volumes:
+      - ./docker/etc:/etc
