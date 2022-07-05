@@ -1,6 +1,9 @@
 {
     "require": {
-        "webonyx/graphql-php": "^0.13.8"
+        "webonyx/graphql-php": "^0.13.8",
+        "illuminate/contracts": "^9.19",
+        "illuminate/http": "^9.19",
+        "laravel-zero/foundation": "^9.17"
     },
     "autoload": {
         "psr-4": {
