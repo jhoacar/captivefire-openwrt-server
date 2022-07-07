@@ -5,8 +5,14 @@ services:
   captivefire-uhttpd:
     build:
       context: '.'
+      args: 
+        UID: ${UID}
+        FOLDER: /app
+        USERNAME: captivefire
     image: captivefire-uhttpd
     container_name: captivefire
+    # Doesn't work using an init script
+    # command: /app/docker/start-container.sh 
     restart: always
     ports:
       - 8080:8080
