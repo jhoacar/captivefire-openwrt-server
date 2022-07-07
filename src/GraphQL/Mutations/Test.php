@@ -16,7 +16,7 @@ class Test implements Mutations
                 'args' => [
                     'message' => Type::nonNull(Type::string()),
                 ],
-                'resolve' => fn ($rootValue, array $args): string => $rootValue['prefix'] . $args['message'],
+                'resolve' => fn ($rootValue, array $args): string => 'Mutation ' . $rootValue['prefix'] . $args['message'],
             ],
         ];
     }

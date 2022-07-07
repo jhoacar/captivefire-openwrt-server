@@ -16,7 +16,7 @@ class Test implements Queries
                 'args' => [
                     'message' => Type::nonNull(Type::string()),
                 ],
-                'resolve' => fn ($rootValue, array $args): string => $rootValue['prefix'] . $args['message'],
+                'resolve' => fn ($rootValue, array $args): string => 'Queries ' . $rootValue['prefix'] . $args['message'],
             ],
         ];
     }

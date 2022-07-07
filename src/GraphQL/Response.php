@@ -124,7 +124,7 @@ class Response extends BaseReponse
     public function getContentGraphQL(): string
     {
         $input = $this->request->toArray();
-        $query = $input['query'];
+        $query = $input[array_key_first($input)];
         $result = GraphQL::executeQuery($this->schema, $query);
         $output = $result->toArray();
         return json_encode($output);
