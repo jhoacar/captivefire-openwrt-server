@@ -4,6 +4,7 @@ namespace App;
 
 use App\GraphQL\Response as GraphQLResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Kernel
 {
@@ -27,13 +28,16 @@ class Kernel
             $request = Request::createFromGlobals();
             $response = new GraphQLResponse($request, $this->graphql);
             $response->send();
-        } catch (\Throwable $error) {
-            $message = "Message: " . $error->getMessage() . "<br>";
-            $message .= "Code: " . $error->getCode() . "<br>";
-            $message .= "File: " . $error->getFile() . "<br>";
-            $message .= "Line: " . $error->getLine() . "<br>";
-            $message .= "Trace: " . $error->getTraceAsString() . "<br>";
-            echo $message;
+        } catch (\Throwable $throwable) {
+            $error = [
+                'message' => $throwable->getMessage(),
+                'code' => $throwable->getCode(),
+                'file' => $throwable->getFile(),
+                'line' => $throwable->getLine(),
+                'trace' => $throwable->getTraceAsString()
+            ];
+            $response = new Response(json_encode($error), 500, ['Content-Type' => 'application/json']);
+            return $response->send();
         }
     }
 }
