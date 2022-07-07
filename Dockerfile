@@ -102,7 +102,7 @@ ARG COMPANYSECTION=captivefire
 ENV COMPANYSECTION=$COMPANYSECTION
 
 # 6 - Common Name (e.g. server FQDN or YOUR name) []:
-ARG COMMONNAME=captivefire
+ARG COMMONNAME=local.router.captivefire.net
 ENV COMMONNAME=$COMMONNAME
 
 # 7 - Email Address []: captivefire@captivefire.net
