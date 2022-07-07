@@ -15,7 +15,8 @@ services:
     # command: /app/docker/start-container.sh 
     restart: always
     ports:
-      - 8080:8080
+      - '${APP_HTTP_PORT:-8080}:8080'
+      - 8443:8443 # HTTPS Port
     volumes:
       - ./docker/etc/config/uhttpd:/etc/config/uhttpd
       - ./docker/etc/php.ini:/etc/php.ini

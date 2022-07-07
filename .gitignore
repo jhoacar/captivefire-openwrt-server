@@ -2,3 +2,6 @@
 /vendor
 composer.lock
 .bash*
+/**/*.cert
+/**/*.crt
+/**/*.key
