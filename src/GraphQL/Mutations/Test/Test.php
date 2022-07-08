@@ -2,10 +2,10 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\GraphQL\Mutations;
+use App\GraphQL\Mutations\Mutation;
 use GraphQL\Type\Definition\Type;
 
-class Test implements Mutations
+class Test implements Mutation
 {
 
     public static function getMutations(): array

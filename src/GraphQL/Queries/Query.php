@@ -1,9 +1,9 @@
 <?php 
 
-namespace App\GraphQL;
+namespace App\GraphQL\Queries;
 
 
-interface Queries{
+interface Query{
     /**
      * This is method that return an array for queries in GraphQL
      */

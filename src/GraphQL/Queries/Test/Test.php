@@ -2,13 +2,14 @@
 
 namespace App\GraphQL\Queries;
 
+use App\GraphQL\Queries\Query;
+
 use GraphQL\Type\Definition\Type;
 
-use App\GraphQL\Queries;
 
 // We import the file for resolvers, if we write 'use' don't import anything without autoloader
 
-class Test implements Queries
+class Test implements Query
 {
     
     public static function getQueries(): array

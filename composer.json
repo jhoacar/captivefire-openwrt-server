@@ -1,6 +1,14 @@
 {
     "type": "project",
     "license": "proprietary",
+    "description": "Captivefire - GraphQL",
+    "keywords": [
+        "graphql",
+        "openwrt",
+        "captivefire",
+        "wifi",
+        "captiveportal"
+    ],
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {

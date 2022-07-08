@@ -2,6 +2,8 @@
 
 namespace App\GraphQL;
 
+use App\GraphQL\Mutations\Mutation;
+use App\GraphQL\Queries\Query;
 use App\Utils\ClassFinder;
 use GraphQL\GraphQL;
 use GraphQL\Type\Definition\ObjectType;
@@ -33,7 +35,7 @@ class Response extends BaseReponse
 
     private function getQueries(): ObjectType
     {
-        $fields = $this->getFields('App\\GraphQL\\Queries', Queries::class, 'getQueries');
+        $fields = $this->getFields('App\\GraphQL\\Queries', Query::class, 'getQueries');
 
         return new ObjectType([
             'name' => 'Query',
@@ -43,7 +45,7 @@ class Response extends BaseReponse
 
     private function getMutations(): ObjectType
     {
-        $fields = $this->getFields('App\\GraphQL\\Mutations', Mutations::class, 'getMutations');
+        $fields = $this->getFields('App\\GraphQL\\Mutations', Mutation::class, 'getMutations');
         return new ObjectType([
             'name' => 'Mutation',
             'fields' => $fields
@@ -60,6 +62,8 @@ class Response extends BaseReponse
     {
         $fields = [];
         $classes = ClassFinder::getClassesInNamespace($namespace);
+        echo json_encode($classes);
+        
         foreach ($classes as $class) {
             if (in_array($interface, class_implements($class))) {
                 $result = call_user_func(array($class, $method));
@@ -67,6 +71,9 @@ class Response extends BaseReponse
                     $fields[$key] = $value;
             }
         }
+
+        // echo json_encode(get_declared_classes());
+        die;
         return $fields;
     }
 

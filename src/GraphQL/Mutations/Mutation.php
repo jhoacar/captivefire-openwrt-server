@@ -1,9 +1,9 @@
 <?php
 
-namespace App\GraphQL;
+namespace App\GraphQL\Mutations;
 
 
-interface Mutations
+interface Mutation
 {
     /**
      * This is a method to return the mutations in GraphQL

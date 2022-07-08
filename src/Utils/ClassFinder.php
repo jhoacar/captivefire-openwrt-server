@@ -1,4 +1,4 @@
-<?php    
+<?php
 
 namespace App\Utils;
 
@@ -9,13 +9,23 @@ class ClassFinder
 
     public static function getClassesInNamespace($namespace)
     {
-        $files = scandir(self::getNamespaceDirectory($namespace));
+        $directory =  self::getNamespaceDirectory($namespace);
+        $files = scandir($directory);
 
-        $classes = array_map(function($file) use ($namespace){
+        $classes = array_map(function ($file) use ($namespace) {
             return $namespace . '\\' . str_replace('.php', '', $file);
         }, $files);
 
-        return array_filter($classes, function($possibleClass){
+        return array_filter($classes, function ($possibleClass) {
+            if (!str_contains($possibleClass, '.'))
+                spl_autoload_register(function ($class) {
+                    $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+                    $class = str_replace('App', __DIR__ . '/..', $class);
+                    $folders = explode(DIRECTORY_SEPARATOR, $class);
+                    $file = end($folders);
+                    require_once $class . DIRECTORY_SEPARATOR . $file . '.php';
+                });
+
             return class_exists($possibleClass);
         });
     }
@@ -35,14 +45,14 @@ class ClassFinder
         $namespaceFragments = explode('\\', $namespace);
         $undefinedNamespaceFragments = [];
 
-        while($namespaceFragments) {
+        while ($namespaceFragments) {
             $possibleNamespace = implode('\\', $namespaceFragments) . '\\';
 
-            if(array_key_exists($possibleNamespace, $composerNamespaces)){
+            if (array_key_exists($possibleNamespace, $composerNamespaces)) {
                 return realpath(self::appRoot . $composerNamespaces[$possibleNamespace] . implode('/', $undefinedNamespaceFragments));
             }
 
-            array_unshift($undefinedNamespaceFragments, array_pop($namespaceFragments));            
+            array_unshift($undefinedNamespaceFragments, array_pop($namespaceFragments));
         }
 
         return false;
