@@ -8,5 +8,5 @@ interface Mutation
     /**
      * This is a method to return the mutations in GraphQL
      */
-    public static function getMutations(): array;
+    public function __invoke(): array;
 }

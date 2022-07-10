@@ -11,8 +11,8 @@ use App\Kernel;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
-$dotenv->load();
+// $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+// $dotenv->load();
 
 define('CAPTIVEFIRE_START', microtime(true));
 

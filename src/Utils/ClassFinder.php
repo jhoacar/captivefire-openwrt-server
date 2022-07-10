@@ -7,6 +7,22 @@ class ClassFinder
     //This value should be the directory that contains composer.json
     const appRoot = __DIR__ . "/../../";
 
+
+    private static function autoloadClasses()
+    {
+        spl_autoload_register(function ($class) {
+            $pathClass = $class;
+            $pathClass = str_replace('\\', DIRECTORY_SEPARATOR, $pathClass);
+            $pathClass = str_replace('App', __DIR__ . '/..', $pathClass);
+
+            $folders = explode(DIRECTORY_SEPARATOR, $pathClass);
+            $file = end($folders);
+
+            $pathFile = realpath($pathClass . DIRECTORY_SEPARATOR . $file . '.php');
+            include_once $pathFile;
+        });
+    }
+
     public static function getClassesInNamespace($namespace)
     {
         $directory =  self::getNamespaceDirectory($namespace);
@@ -17,15 +33,8 @@ class ClassFinder
         }, $files);
 
         return array_filter($classes, function ($possibleClass) {
-            if (!str_contains($possibleClass, '.'))
-                spl_autoload_register(function ($class) {
-                    $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-                    $class = str_replace('App', __DIR__ . '/..', $class);
-                    $folders = explode(DIRECTORY_SEPARATOR, $class);
-                    $file = end($folders);
-                    require_once $class . DIRECTORY_SEPARATOR . $file . '.php';
-                });
-
+            /* We need autoload classes that is in folders */
+            self::autoloadClasses();
             return class_exists($possibleClass);
         });
     }

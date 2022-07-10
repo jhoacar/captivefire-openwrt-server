@@ -2,9 +2,10 @@
 
 namespace App\GraphQL;
 
-use App\GraphQL\Mutations\Mutation;
-use App\GraphQL\Queries\Query;
+use App\GraphQL\Mutations\MutationType;
+use App\GraphQL\Queries\QueryType;
 use App\Utils\ClassFinder;
+
 use GraphQL\GraphQL;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Schema;
@@ -62,8 +63,7 @@ class Response extends BaseReponse
     {
         $fields = [];
         $classes = ClassFinder::getClassesInNamespace($namespace);
-        echo json_encode($classes);
-        
+
         foreach ($classes as $class) {
             if (in_array($interface, class_implements($class))) {
                 $result = call_user_func(array($class, $method));
@@ -72,16 +72,14 @@ class Response extends BaseReponse
             }
         }
 
-        // echo json_encode(get_declared_classes());
-        die;
         return $fields;
     }
 
     private function loadSchema(): void
     {
         $this->schema = new Schema([
-            'query' => $this->getQueries(),
-            'mutation' => $this->getMutations()
+            'query' => QueryType::query(),
+            'mutation' => MutationType::mutation(),
         ]);
     }
 
@@ -130,9 +128,19 @@ class Response extends BaseReponse
      */
     public function getContentGraphQL(): string
     {
+        // Prepare context that will be available in all field resolvers (as 3rd argument):
+        $appContext = new Context();
+        $appContext->request = $this->request;
+
         $input = $this->request->toArray();
         $query = $input[array_key_first($input)];
-        $result = GraphQL::executeQuery($this->schema, $query);
+        $result = GraphQL::executeQuery(
+            $this->schema,
+            $query,
+            null,
+            $appContext,
+            (array) $input['variables']
+        );
         $output = $result->toArray();
         return json_encode($output);
     }

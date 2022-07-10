@@ -20,4 +20,9 @@ class Test implements Mutation
             ],
         ];
     }
+
+    public function __invoke(): array
+    {
+        return [];
+    }
 }
