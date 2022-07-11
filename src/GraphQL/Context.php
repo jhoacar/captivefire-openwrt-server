@@ -9,7 +9,7 @@ class Context
     /**
      * @var Request
      */
-    public Request $request;
+    public $request;
 
     public function __construct()
     {

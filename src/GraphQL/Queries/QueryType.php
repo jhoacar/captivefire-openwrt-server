@@ -8,11 +8,26 @@ use GraphQL\Type\Definition\ResolveInfo;
 
 class QueryType extends ObjectType
 {
+    /**
+     * @var QueryType
+     */
     private static $query;
-    private string $method = 'getFields';
-    private string $interface = IQuery::class;
-    private array $fields = [];
-    private array $classes = [];
+    /**
+     * @var string
+     */
+    private $method = "getFields";
+    /**
+     * @var string
+     */
+    private $interface = IQuery::class;
+    /**
+     * @var array
+     */
+    private $fields = [];
+    /**
+     * @var array
+     */
+    private $classes = [];
 
     /**
      * Singleton Pattern
@@ -44,7 +59,7 @@ class QueryType extends ObjectType
     }
 
     /**
-     * This function load all classes using this namespace, 
+     * This function load all classes using this namespace,
      * using invoke method for each one
      */
     private function searchFields(): void
@@ -52,13 +67,11 @@ class QueryType extends ObjectType
         $classes = ClassFinder::getClassesInNamespace(__NAMESPACE__);
 
         foreach ($classes as $class) {
-
             if (
-                in_array($this->interface, class_implements($class)) &&
+                in_array($this->interface, class_implements($class), true) &&
                 method_exists($class, $this->method)
             ) {
-
-                $result = call_user_func(array($class, $this->method)); // ($class)();
+                $result = call_user_func([$class, $this->method]); // ($class)();
 
                 foreach ($result as $key => $value) {
                     $this->fields[$key] = $value;

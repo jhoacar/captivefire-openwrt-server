@@ -8,7 +8,6 @@ use GraphQL\Type\Definition\Type;
 
 class UhttpdType extends ObjectType
 {
-
     public function __construct()
     {
         $config = [

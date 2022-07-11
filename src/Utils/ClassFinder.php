@@ -5,7 +5,10 @@ namespace App\Utils;
 class ClassFinder
 {
     //This value should be the directory that contains composer.json
-    const appRoot = __DIR__ . "/../../";
+    /**
+     * @var string
+     */
+    public const appRoot = __DIR__ . "/../../";
 
 
     private static function autoloadClasses()

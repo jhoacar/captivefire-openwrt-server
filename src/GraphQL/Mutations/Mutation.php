@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Mutations;
 
-
 interface Mutation
 {
     /**

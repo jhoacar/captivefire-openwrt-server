@@ -14,11 +14,22 @@ use Symfony\Component\HttpFoundation\Response as BaseReponse;
 
 class Response extends BaseReponse
 {
-    public Schema $schema;
-    public Request $request;
-
-    public string $uri = "graphql";
-    public string $graphql_method = Request::METHOD_POST;
+    /**
+     * @var Schema
+     */
+    public $schema;
+    /**
+     * @var Request
+     */
+    public $request;
+    /**
+     * @var string
+     */
+    public $uri = "graphql";
+    /**
+     * @var string
+     */
+    public $graphql_method = Request::METHOD_POST;
 
     /**
      * @param Symfony\Component\HttpFoundation\Request

@@ -8,10 +8,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Kernel
 {
-
-    public string $environment = 'local';
-    public bool $debug = false;
-    public array $graphql = [
+    /**
+     * @var string
+     */
+    public $environment = 'local';
+    /**
+     * @var bool
+     */
+    public $debug = false;
+    /**
+     * @var array
+     */
+    public $graphql = [
         'uri' => 'graphql',
     ];
 
