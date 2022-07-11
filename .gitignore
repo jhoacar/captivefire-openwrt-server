@@ -1,7 +1,8 @@
-/*.env
-/vendor
-composer.lock
-.bash*
+/**/*.env
+/**/node_modules
+/**/vendor
+/**/composer.lock
+/**/.bash*
 /**/*.cert
 /**/*.crt
 /**/*.key

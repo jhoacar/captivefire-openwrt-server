@@ -9,8 +9,6 @@ use GraphQL\Type\Definition\Type;
 class UhttpdType extends ObjectType
 {
 
-    private static $listen_http;
-
     public function __construct()
     {
         $config = [
@@ -35,11 +33,12 @@ class UhttpdType extends ObjectType
 
     private function listen_http()
     {
+        $resolver = require_once 'Resolvers/ListenHttp.php';
         return [
             'name' => 'listen_http',
             'type' => Type::string(),
             'description' => 'Port for HTTP Request',
-            'resolve' => require_once 'Resolvers/ListenHttp.php',
+            'resolve' => $resolver,
         ];
     }
 }
