@@ -26,7 +26,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "./vendor/bin/phpunit"
     }
+  },
+  "lint-staged": {
+    "**/*.php": [
+      "php ./vendor/bin/php-cs-fixer fix --config .php_cs --allow-risky=yes"
+    ]
   }
 }
