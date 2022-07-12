@@ -4,50 +4,45 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use GraphQL\Utils\Utils;
+use App\GraphQL\Response;
+use GraphQL\GraphQL;
 use PHPUnit\Framework\TestCase;
-use function mb_check_encoding;
 
 final class UhttpdTest extends TestCase
 {
     /**
-     * @dataProvider chrUtf8DataProvider
+     * @return iterable<array{query: string, field: string}>
      */
-    public function testChrUtf8Generation(int $input, string $expected): void
+    public function queryFieldsDataProvider(): iterable
     {
-        $result = Utils::chr($input);
-
-        self::assertTrue(mb_check_encoding($result, 'UTF-8'));
-        self::assertEquals($expected, $result);
+        yield 'listen_http' => [
+            'query' => '{
+                uhttpd{
+                    listen_http
+                }
+            }',
+            'field' => 'listen_http',
+        ];
     }
 
     /**
-     * @return iterable<array{input: int, expected: string}>
+     * @dataProvider queryFieldsDataProvider
      */
-    public function chrUtf8DataProvider(): iterable
+    public function testCorrectlyExistsField(string $query, string $field)
     {
-        yield 'alphabet' => [
-            'input' => 0x0061,
-            'expected' => 'a',
-        ];
-
-        yield 'numeric' => [
-            'input' => 0x0030,
-            'expected' => '0',
-        ];
-
-        yield 'emoji' => [
-            'input' => 0x231A,
-            'expected' => '⌚',
-        ];
+        self::assertExistField($query, $field);
     }
 
-    public function testPrintSafeJson(): void
+    /**
+     * Helper function to test a query and the expected response.
+     *
+     * @param array<string, mixed> $expected
+     */
+    private static function assertExistField(string $query, string $field): void
     {
-        self::assertJsonStringEqualsJsonString(
-            /** @lang JSON */
-            '{"foo":1}',
-            Utils::printSafeJson((object) ['foo' => 1])
+        self::assertNotEmpty(
+            GraphQL::executeQuery(Response::getSchema(), $query)->toArray()['data']['uhttpd'][$field],
+            "$field empty or bad implemented yet"
         );
     }
 }

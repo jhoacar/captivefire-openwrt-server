@@ -4,10 +4,8 @@ namespace App\GraphQL;
 
 use App\GraphQL\Mutations\MutationType;
 use App\GraphQL\Queries\QueryType;
-use App\Utils\ClassFinder;
 
 use GraphQL\GraphQL;
-use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Schema;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as BaseReponse;
@@ -17,7 +15,7 @@ class Response extends BaseReponse
     /**
      * @var Schema
      */
-    public $schema;
+    public static $schema;
     /**
      * @var Request
      */
@@ -40,58 +38,18 @@ class Response extends BaseReponse
     {
         parent::__construct();
         $this->request = $request;
-        foreach ($config as $key => $value)
+        foreach ($config as $key => $value) {
             $this->$key = $value;
-        $this->loadSchema();
-    }
-
-    private function getQueries(): ObjectType
-    {
-        $fields = $this->getFields('App\\GraphQL\\Queries', Query::class, 'getQueries');
-
-        return new ObjectType([
-            'name' => 'Query',
-            'fields' => $fields
-        ]);
-    }
-
-    private function getMutations(): ObjectType
-    {
-        $fields = $this->getFields('App\\GraphQL\\Mutations', Mutation::class, 'getMutations');
-        return new ObjectType([
-            'name' => 'Mutation',
-            'fields' => $fields
-        ]);
-    }
-
-    /**
-     * This function extract all fields in all clasess that implements the interface
-     * @param string $namespace
-     * @param string $interface
-     * @param string $method 
-     */
-    private function getFields(string $namespace, string $interface, string $method): array
-    {
-        $fields = [];
-        $classes = ClassFinder::getClassesInNamespace($namespace);
-
-        foreach ($classes as $class) {
-            if (in_array($interface, class_implements($class))) {
-                $result = call_user_func(array($class, $method));
-                foreach ($result as $key => $value)
-                    $fields[$key] = $value;
-            }
         }
-
-        return $fields;
+        $this->getSchema();
     }
 
-    private function loadSchema(): void
+    public static function getSchema()
     {
-        $this->schema = new Schema([
+        return self::$schema ?: (self::$schema = new Schema([
             'query' => QueryType::query(),
             'mutation' => MutationType::mutation(),
-        ]);
+        ]));
     }
 
     public function isGraphQLRequest(): bool
@@ -117,14 +75,14 @@ class Response extends BaseReponse
      *
      * @return $this
      */
-    public function send(): static
+    public function send()
     {
         try {
-
-            if ($this->isGraphQLRequest())
+            if ($this->isGraphQLRequest()) {
                 $this->setStatusCode(200)->setContent($this->getContentGraphQL());
-            else
+            } else {
                 $this->setStatusCode(404)->setContent($this->getNotFound());
+            }
         } catch (\Throwable $error) {
             $this->setContent(json_encode(['error' => $error->getMessage()]));
         } finally {
@@ -134,7 +92,7 @@ class Response extends BaseReponse
     }
 
     /**
-     * Execute Query for GraphQL 
+     * Execute Query for GraphQL
      * @return string
      */
     public function getContentGraphQL(): string
