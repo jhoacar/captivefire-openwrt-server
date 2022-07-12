@@ -31,6 +31,7 @@ class QueryType extends ObjectType
     /*************** Singleton Pattern **************/
     private function __construct()
     {
+        $this->namespace = __NAMESPACE__;
         $this->searchFields();
         $config = [
             'name' => 'Query',

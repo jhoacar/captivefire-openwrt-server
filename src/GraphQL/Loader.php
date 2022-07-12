@@ -23,6 +23,10 @@ trait Loader
      * @var array
      */
     private $classes = [];
+    /**
+     * @var string
+     */
+    protected $namespace = __NAMESPACE__;
 
     /**
      * This function load all classes using this namespace,
@@ -30,7 +34,7 @@ trait Loader
      */
     private function searchFields(): void
     {
-        $classes = ClassFinder::getClassesInNamespace(__NAMESPACE__);
+        $classes = ClassFinder::getClassesInNamespace($this->namespace);
 
         foreach ($classes as $class) {
             if (
