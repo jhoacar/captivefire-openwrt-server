@@ -2,20 +2,13 @@
 
 namespace App\GraphQL;
 
-use App\GraphQL\Mutations\MutationType;
-use App\GraphQL\Queries\QueryType;
-
+use App\GraphQL\Schema;
 use GraphQL\GraphQL;
-use GraphQL\Type\Schema;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as BaseReponse;
 
 class Response extends BaseReponse
 {
-    /**
-     * @var Schema
-     */
-    public static $schema;
     /**
      * @var Request
      */
@@ -41,15 +34,6 @@ class Response extends BaseReponse
         foreach ($config as $key => $value) {
             $this->$key = $value;
         }
-        $this->getSchema();
-    }
-
-    public static function getSchema()
-    {
-        return self::$schema ?: (self::$schema = new Schema([
-            'query' => QueryType::query(),
-            'mutation' => MutationType::mutation(),
-        ]));
     }
 
     public function isGraphQLRequest(): bool
@@ -104,7 +88,7 @@ class Response extends BaseReponse
         $input = $this->request->toArray();
         $query = $input[array_key_first($input)];
         $result = GraphQL::executeQuery(
-            $this->schema,
+            Schema::get(),
             $query,
             null,
             $appContext,

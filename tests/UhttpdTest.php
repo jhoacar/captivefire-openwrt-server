@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\GraphQL\Response;
+use App\GraphQL\Schema;
 use GraphQL\GraphQL;
 use PHPUnit\Framework\TestCase;
 
@@ -40,7 +41,7 @@ final class UhttpdTest extends TestCase
      */
     private static function assertExistField(string $query, string $field): void
     {
-        $result = GraphQL::executeQuery(Response::getSchema(), $query)->toArray();
+        $result = GraphQL::executeQuery(Schema::get(), $query)->toArray();
 
         self::assertTrue(!empty($result['data']), 'An error ocurred in the GraphQL Schema');
 
