@@ -43,8 +43,8 @@
         "auto-scripts": {},
         "post-install-cmd": [],
         "post-update-cmd": [],
-        "test": "phpunit",
-        "lint": "php-cs-fixer fix src --config=.php-cs-fixer.php --using-cache=no --allow-risky=yes"
+        "test": "phpunit tests",
+        "fix": "php-cs-fixer fix src --config=.php-cs-fixer.php --using-cache=no --allow-risky=yes"
     },
     "conflict": {},
     "extra": {},
