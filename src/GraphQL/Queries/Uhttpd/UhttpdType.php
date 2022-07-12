@@ -19,7 +19,7 @@ class UhttpdType extends ObjectType
                 ];
             },
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
-                $method = ucfirst($info->fieldName);
+                $method = 'resolve' . ucfirst($info->fieldName);
                 if (method_exists($this, $method)) {
                     return $this->{$method}($value, $args, $context, $info);
                 } else {
@@ -32,7 +32,7 @@ class UhttpdType extends ObjectType
 
     private function listen_http()
     {
-        $resolver = require_once 'Resolvers/ListenHttp.php';
+        $resolver = require_once 'Resolvers/UciCommand.php';
         return [
             'name' => 'listen_http',
             'type' => Type::string(),

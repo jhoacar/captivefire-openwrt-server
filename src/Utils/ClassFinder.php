@@ -8,7 +8,7 @@ class ClassFinder
     /**
      * @var string
      */
-    public const appRoot = __DIR__ . "/../../";
+    public const APP_ROOT = __DIR__ . "/../../";
 
 
     private static function autoloadClasses()
@@ -44,7 +44,7 @@ class ClassFinder
 
     private static function getDefinedNamespaces()
     {
-        $composerJsonPath = self::appRoot . 'composer.json';
+        $composerJsonPath = self::APP_ROOT . 'composer.json';
         $composerConfig = json_decode(file_get_contents($composerJsonPath));
 
         return (array) $composerConfig->autoload->{'psr-4'};
@@ -61,7 +61,7 @@ class ClassFinder
             $possibleNamespace = implode('\\', $namespaceFragments) . '\\';
 
             if (array_key_exists($possibleNamespace, $composerNamespaces)) {
-                return realpath(self::appRoot . $composerNamespaces[$possibleNamespace] . implode('/', $undefinedNamespaceFragments));
+                return realpath(self::APP_ROOT . $composerNamespaces[$possibleNamespace] . implode('/', $undefinedNamespaceFragments));
             }
 
             array_unshift($undefinedNamespaceFragments, array_pop($namespaceFragments));
