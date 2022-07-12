@@ -40,9 +40,20 @@ final class UhttpdTest extends TestCase
      */
     private static function assertExistField(string $query, string $field): void
     {
-        self::assertNotEmpty(
-            GraphQL::executeQuery(Response::getSchema(), $query)->toArray()['data']['uhttpd'][$field],
-            "$field empty or bad implemented yet"
-        );
+        $result = GraphQL::executeQuery(Response::getSchema(), $query)->toArray();
+
+        self::assertTrue(!empty($result['data']), 'An error ocurred in the GraphQL Schema');
+
+        if (empty($result['data'])) {
+            return;
+        }
+
+        self::assertTrue(!empty($result['data']['uhttpd']), 'uhttpd field is empty or bad implemented');
+
+        if (empty($result['data']['uhttpd'])) {
+            return;
+        }
+
+        self::assertTrue(!empty($result['data']['uhttpd'][$field]), "$field empty or bad implemented yet");
     }
 }
