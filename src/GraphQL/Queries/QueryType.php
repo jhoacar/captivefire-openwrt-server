@@ -2,32 +2,22 @@
 
 namespace App\GraphQL\Queries;
 
-use App\Utils\ClassFinder;
+use App\GraphQL\Loader;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 
 class QueryType extends ObjectType
 {
     /**
+     * This trait load all fields in each folder for this namespace
+     */
+    use Loader;
+
+    /**
      * @var QueryType
      */
     private static $query;
-    /**
-     * @var string
-     */
-    private $method = "getFields";
-    /**
-     * @var string
-     */
-    private $interface = IQuery::class;
-    /**
-     * @var array
-     */
-    private $fields = [];
-    /**
-     * @var array
-     */
-    private $classes = [];
+
 
     /**
      * Singleton Pattern
@@ -56,28 +46,5 @@ class QueryType extends ObjectType
             }
         ];
         parent::__construct($config);
-    }
-
-    /**
-     * This function load all classes using this namespace,
-     * using invoke method for each one
-     */
-    private function searchFields(): void
-    {
-        $classes = ClassFinder::getClassesInNamespace(__NAMESPACE__);
-
-        foreach ($classes as $class) {
-            if (
-                in_array($this->interface, class_implements($class), true) &&
-                method_exists($class, $this->method)
-            ) {
-                $result = call_user_func([$class, $this->method]); // ($class)();
-
-                foreach ($result as $key => $value) {
-                    $this->fields[$key] = $value;
-                    $this->classes[$key] = $class;
-                }
-            }
-        }
     }
 }

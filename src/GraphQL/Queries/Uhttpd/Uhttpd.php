@@ -2,10 +2,10 @@
 
 namespace App\GraphQL\Queries;
 
-use App\GraphQL\Queries\IQuery;
+use App\GraphQL\ILoader;
 use App\GraphQL\Queries\Uhttpd\UhttpdType;
 
-class Uhttpd implements IQuery
+class Uhttpd implements ILoader
 {
     private static $uhttpd;
     /**

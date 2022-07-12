@@ -13,6 +13,7 @@ class Schema extends BaseSchema
      */
     private static $instance;
 
+    /*************** Singleton Pattern **************/
     private function __construct($config)
     {
         parent::__construct($config);
