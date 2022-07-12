@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Tests;
+namespace App\Tests\GraphQL\Queries;
 
-use App\GraphQL\Response;
 use App\GraphQL\Schema;
 use GraphQL\GraphQL;
 use PHPUnit\Framework\TestCase;
