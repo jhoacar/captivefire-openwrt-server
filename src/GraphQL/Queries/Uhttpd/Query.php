@@ -1,11 +1,11 @@
 <?php
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Queries\Uhttpd;
 
 use App\GraphQL\ILoader;
 use App\GraphQL\Queries\Uhttpd\UhttpdType;
 
-class Uhttpd implements ILoader
+class Query implements ILoader
 {
     private static $uhttpd;
     /**

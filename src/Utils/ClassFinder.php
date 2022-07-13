@@ -26,18 +26,36 @@ class ClassFinder
         });
     }
 
+    /**
+     * Search all classes defined in the namespace using autoloading
+     * based in psr-4 standard, only serach in the directory and a level
+     * for subdirectories.
+     * @return array
+     */
     public static function getClassesInNamespace($namespace)
     {
         $directory =  self::getNamespaceDirectory($namespace);
         $files = scandir($directory);
+        $classes = [];
 
-        $classes = array_map(function ($file) use ($namespace) {
-            return $namespace . '\\' . str_replace('.php', '', $file);
-        }, $files);
+        foreach ($files as $file) {
+            $className = $namespace . '\\' . str_replace('.php', '', $file);
+            if (str_contains($file, '.php')) {
+                array_push($classes, $className);
+            } elseif ($file !== '.' && $file !== '..') {
+                $subdirectory = self::getNamespaceDirectory($className);
+                $subfiles = scandir($subdirectory);
+
+                foreach ($subfiles as $subfile) {
+                    $subClassName = $className . '\\' . str_replace('.php', '', $subfile);
+                    if (str_contains($subfile, '.php')) {
+                        array_push($classes, $subClassName);
+                    }
+                }
+            }
+        }
 
         return array_filter($classes, function ($possibleClass) {
-            /* We need autoload classes that is in folders */
-            self::autoloadClasses();
             return class_exists($possibleClass);
         });
     }

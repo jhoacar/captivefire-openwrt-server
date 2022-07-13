@@ -6,5 +6,5 @@ use App\Utils\UciCommand;
 use GraphQL\Type\Definition\ResolveInfo;
 
 return function ($value, $args, $context, ResolveInfo $info): string {
-    return UciCommand::get($info->parentType, 'captivefire', $info->fieldName);
+    return preg_replace('/\r\n|\r|\n/', '', UciCommand::get($info->parentType, 'captivefire', $info->fieldName));
 };

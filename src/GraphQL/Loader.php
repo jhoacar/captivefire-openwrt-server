@@ -2,8 +2,15 @@
 
 namespace App\GraphQL;
 
-use App\GraphQL\ILoader;
 use App\Utils\ClassFinder;
+
+interface ILoader
+{
+    /**
+     * This is a method to resolve the fields
+     */
+    public static function getFields(): array;
+}
 
 trait Loader
 {
@@ -30,7 +37,7 @@ trait Loader
 
     /**
      * This function load all classes using this namespace,
-     * using invoke method for each one
+     * calling a specified static method
      */
     private function searchFields(): void
     {

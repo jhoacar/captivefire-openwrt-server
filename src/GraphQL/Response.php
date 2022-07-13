@@ -2,7 +2,10 @@
 
 namespace App\GraphQL;
 
+use App\GraphQL\Queries\Uci\UciType;
 use App\GraphQL\Schema;
+use App\Utils\Command;
+use App\Utils\UciCommand;
 use GraphQL\GraphQL;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as BaseReponse;
@@ -95,6 +98,9 @@ class Response extends BaseReponse
             (array) $input['variables']
         );
         $output = $result->toArray();
+        $output = UciCommand::getUciConfiguration();
+        // $output = explode(PHP_EOL, Command::execute("uci show"));
+
         return json_encode($output);
     }
 }

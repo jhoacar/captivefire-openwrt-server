@@ -38,7 +38,7 @@ class QueryType extends ObjectType
             'fields' => $this->fields,
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
                 /* Execute this function load the root value for the fields */
-                $method = $info->fieldName;
+                $method = 'resolve' . ucfirst($info->fieldName);
                 if (method_exists($this, $method)) {
                     return $this->{$method}($value, $args, $context, $info);
                 } else {
