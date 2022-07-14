@@ -20,10 +20,12 @@
         "ext-mbstring": "*"
     },
     "require-dev": {
+        "ext-dom": "*",
+        "ext-tokenizer": "*",
+        "ext-xsl": "*",
         "friendsofphp/php-cs-fixer": "^3.9|^3.4",
         "phpunit/phpunit": "^9.0",
-        "ext-dom": "*",
-        "ext-tokenizer": "*"
+        "theseer/phpdox": "^0.7"
     },
     "config": {
         "allow-plugins": {
@@ -57,17 +59,22 @@
             "phpunit tests"
         ],
         "sniff": [
-            "./vendor/bin/php-cs-fixer fix -vvv --dry-run --show-progress=dots"
+            "php-cs-fixer fix -vvv --dry-run --show-progress=dots"
         ],
         "lint": [
-            "./vendor/bin/php-cs-fixer fix -vvv --show-progress=dots"
+            "php-cs-fixer fix -vvv --show-progress=dots"
+        ],
+        "phpdox" : [
+            "phpdox"
         ]
     },
     "conflict": {},
     "extra": {
         "ext-iconv": "Used in symfony/http-foundation",
-        "ext-mbstring": "Used in vlucas/phpdotenv, webonyx/graphql-php and phpunit/phpunit",
+        "ext-mbstring": "Used in vlucas/phpdotenv, webonyx/graphql-php, theseer/phpdox and phpunit/phpunit",
         "ext-tokenizer": "Used in friendsofphp/php-cs-fixer",
-        "ext-dom": "Used in phpunit/phpunit"
+        "ext-dom": "Used in phpunit/phpunit and theseer/phpdox",
+        "ext-xsl": "Used in theseer/phpdox",
+        "changePHPversion": "sudo update-alternatives --config php"
     }
 }
