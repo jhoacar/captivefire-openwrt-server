@@ -2,7 +2,6 @@
 
 namespace App\GraphQL\Queries\Uci;
 
-use App\Utils\Command;
 use App\Utils\UciCommand;
 use GraphQL\Type\Definition\FieldDefinition;
 use GraphQL\Type\Definition\ObjectType;
@@ -41,7 +40,7 @@ class UciType extends ObjectType
     }
 
     /**
-     * Return an array with unique keys for each array
+     * Return an array with unique keys for each array.
      * @param array
      * @return array
      */
@@ -50,9 +49,11 @@ class UciType extends ObjectType
         /* Load All Unique Keys for the array */
         $allOptions = [];
         foreach ($section as $options) {
-            foreach ($options as $optionName)
+            foreach ($options as $optionName) {
                 $allOptions[$optionName] = true;
+            }
         }
+
         return array_keys($allOptions);
     }
 
@@ -81,11 +82,9 @@ class UciType extends ObjectType
 
         $uciFields = [];
         foreach ($config as $configName => $sections) {
-
             $configFields = [];
 
             foreach ($sections as $sectionName => $section) {
-
                 $sectionFields = [];
                 $isArraySection = is_array($section);
 
@@ -96,7 +95,7 @@ class UciType extends ObjectType
                 }
 
                 $configFields[$sectionName] = [
-                    'type' => self::getSectionType($configName, $sectionName, $sectionFields, $isArraySection)
+                    'type' => self::getSectionType($configName, $sectionName, $sectionFields, $isArraySection),
                 ];
             }
             $uciFields[$configName] = [

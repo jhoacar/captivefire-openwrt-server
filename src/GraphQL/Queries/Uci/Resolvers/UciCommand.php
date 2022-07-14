@@ -6,5 +6,5 @@ use App\Utils\UciCommand;
 use GraphQL\Type\Definition\ResolveInfo;
 
 return function ($value, $args, $context, ResolveInfo $info): string {
-    return $info->fieldName;// UciCommand::get($info->parentType, 'captivefire', $info->fieldName);
+    return $info->fieldName; // UciCommand::get($info->parentType, 'captivefire', $info->fieldName);
 };

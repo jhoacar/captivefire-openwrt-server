@@ -28,10 +28,10 @@ final class UhttpdTest extends TestCase
     /**
      * @dataProvider queryFieldsDataProvider
      */
-    public function testCorrectlyExistsField(string $query, string $field)
-    {
-        self::assertExistField($query, $field);
-    }
+    // public function testCorrectlyExistsField(string $query, string $field)
+    // {
+    //     self::assertExistField($query, $field);
+    // }
 
     /**
      * Helper function to test a query and the expected response.
