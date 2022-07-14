@@ -5,18 +5,18 @@ namespace App\Utils;
 use stdClass;
 
 /**
- * Class used for execute uci commands in the system
+ * Class used for execute uci commands in the system.
  */
 class UciCommand extends Command
 {
     /**
-     * This is the text that shows the uci system when a resource is not found
+     * This is the text that shows the uci system when a resource is not found.
      * @var string
      */
     public const NOT_FOUND = 'not found';
-    
+
     /**
-     * Return a string to use in a command shell
+     * Return a string to use in a command shell.
      * @param string
      * @return string
      */
@@ -28,7 +28,7 @@ class UciCommand extends Command
     /**
      * Return the output for the specified resource
      * Validate the each field used as input
-     * Also if the resource is not found return an empty string
+     * Also if the resource is not found return an empty string.
      * @param string $config file to find in /etc/config for default
      * @param string $section to find in the config
      * @param string $option to find in the section for the config
@@ -41,19 +41,19 @@ class UciCommand extends Command
         $option = self::cleanInput($option);
         $result = parent::execute("uci get $config.$section.$option");
 
-        return !strlen($result) || str_contains($result, self::NOT_FOUND) ? '' : $result;
+        return str_contains($result, self::NOT_FOUND) ? '' : $result;
     }
 
     /**
      * Return an index in the string contained between [] or -1 otherwise
      * For example:
      *         For the input => '@system[14]'
-     *         You obtain => 14
-     *          
+     *         You obtain => 14.
+     *
      *         For the input => 'system20'
      *         You obtain => -1
      * @param string name section
-     * @return int 
+     * @return int
      */
     private static function getIndexSection(string $section): int
     {
@@ -70,12 +70,12 @@ class UciCommand extends Command
      * Return the name section that is contained between @ and [ or same string otherwise
      * For example:
      *          For the input => '@system[14]'
-     *          You obtain => 'system'
-     * 
+     *          You obtain => 'system'.
+     *
      *          For the input => 'system20'
      *          You obtain => 'system20'
      * @param string name section
-     * @return string 
+     * @return string
      */
     private static function getNameSection(string $section): string
     {
@@ -89,18 +89,18 @@ class UciCommand extends Command
     }
 
     /**
-     * Return an object with the representation for the UCI System
-     * 
+     * Return an object with the representation for the UCI System.
+     *
      * For example:
      *  {
      *      app:{
      *          port
      *      }
      *  }
-     * 
+     *
      * - If a section is an array is saved as a Array
      *  - This array is saved with the position described by the uci system
-     * 
+     *
      * - If a section is not an array, so it's saved as a stdClass
      *  - This stdClass has a attribute 'options' for each option in this section
      * @param void

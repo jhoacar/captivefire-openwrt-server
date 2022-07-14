@@ -7,9 +7,8 @@ use GraphQL\GraphQL;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as BaseReponse;
 
-
 /**
- * Class used for response all graphql data 
+ * Class used for response all graphql data.
  */
 class Response extends BaseReponse
 {
@@ -60,7 +59,7 @@ class Response extends BaseReponse
     }
 
     /**
-     * Return default 404 error response
+     * Return default 404 error response.
      * @param void
      * @return string
      */

@@ -5,7 +5,7 @@ namespace App\GraphQL;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class used by send all the information inside each resolver for GraphQL
+ * Class used by send all the information inside each resolver for GraphQL.
  */
 class Context
 {

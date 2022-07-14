@@ -11,7 +11,7 @@ use GraphQL\Type\Definition\ResolveInfo;
  */
 class QueryType extends ObjectType
 {
-    /**
+    /*
      * This trait load all fields in each folder for this namespace
      */
     use Loader;
@@ -33,7 +33,7 @@ class QueryType extends ObjectType
 
     /**
      * We use a private construct method for prevent instances
-     * Its called as singleton pattern
+     * Its called as singleton pattern.
      */
     private function __construct()
     {
@@ -46,7 +46,7 @@ class QueryType extends ObjectType
                 /**
                  * Execute this function load the root value for the fields
                  * If a method in this class has the name 'resolve' . $fieldName
-                 * is called for resolve, empty string for the root value otherwise 
+                 * is called for resolve, empty string for the root value otherwise.
                  */
                 $method = 'resolve' . ucfirst($info->fieldName);
                 if (method_exists($this, $method)) {

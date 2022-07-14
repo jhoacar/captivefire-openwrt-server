@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class used for run all the application
+ * Class used for run all the application.
  */
 class Kernel
 {
@@ -35,7 +35,7 @@ class Kernel
 
     /**
      * This function load all the GraphQL response logic and send the response
-     * If an error ocurred is catched and the response is used with 500 status code  
+     * If an error ocurred is catched and the response is used with 500 status code.
      * @param void
      * @return Response
      */

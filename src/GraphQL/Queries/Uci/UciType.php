@@ -9,7 +9,7 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 
 /**
- * Class used for load all schema for the UCI System in GraphQL
+ * Class used for load all schema for the UCI System in GraphQL.
  */
 class UciType extends ObjectType
 {

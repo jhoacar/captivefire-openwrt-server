@@ -5,9 +5,8 @@ namespace App\GraphQL\Queries;
 use App\GraphQL\ILoader;
 use App\GraphQL\Queries\Uci\UciType;
 
-
 /**
- * Class used for load all the uci type in GraphQL
+ * Class used for load all the uci type in GraphQL.
  */
 class Query implements ILoader
 {

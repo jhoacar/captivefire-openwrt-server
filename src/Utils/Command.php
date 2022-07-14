@@ -3,12 +3,12 @@
 namespace App\Utils;
 
 /**
- * Class used for execute commands in shell
+ * Class used for execute commands in shell.
  */
 class Command
 {
     /**
-     * Return a string with the stdoutput and stderr for the command executed
+     * Return a string with the stdoutput and stderr for the command executed.
      * @param string
      * @return string
      */

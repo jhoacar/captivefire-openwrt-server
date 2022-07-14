@@ -3,18 +3,18 @@
 namespace App\Utils;
 
 /**
- * Class used for find classes in namespace
+ * Class used for find classes in namespace.
  */
 class ClassFinder
 {
     /**
-     * This value should be the directory that contains composer.json
+     * This value should be the directory that contains composer.json.
      * @var string
      */
     public const APP_ROOT = __DIR__ . '/../../';
 
     /**
-     * This method is an autoloader if a class is not founded with psr-4 standard
+     * This method is an autoloader if a class is not founded with psr-4 standard.
      * @param void
      * @return void
      */
@@ -69,7 +69,7 @@ class ClassFinder
     }
 
     /**
-     * Return the standard autoload psr-4 definition in composer.json
+     * Return the standard autoload psr-4 definition in composer.json.
      * @param void
      * @return array
      */
@@ -82,7 +82,7 @@ class ClassFinder
     }
 
     /**
-     * Returns the namespace directory if it exists or false otherwise
+     * Returns the namespace directory if it exists or false otherwise.
      * @param string
      * @return string|bool
      */
