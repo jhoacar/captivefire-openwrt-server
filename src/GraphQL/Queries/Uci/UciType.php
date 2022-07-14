@@ -8,6 +8,9 @@ use GraphQL\Type\Definition\FieldDefinition;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 
+/**
+ * Class used for load all schema for the UCI System in GraphQL
+ */
 class UciType extends ObjectType
 {
     /**
@@ -32,7 +35,6 @@ class UciType extends ObjectType
 
     /**
      * @return FieldDefinition[]
-     *
      * @throws InvariantViolation
      */
     public function getFields()
@@ -47,6 +49,8 @@ class UciType extends ObjectType
 
     /**
      * Return all fields in the uci configuration using GraphQL sintax.
+     * @param void
+     * @return array
      */
     public static function getUciFields(): array
     {

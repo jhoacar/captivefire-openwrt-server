@@ -1,7 +1,6 @@
 <?php
 
 $rules = [
-    '@PSR12' => true,
     'array_syntax' => ['syntax' => 'short'],
     'binary_operator_spaces' => [
         'default' => 'single_space',

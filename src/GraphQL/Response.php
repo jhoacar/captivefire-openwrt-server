@@ -2,12 +2,15 @@
 
 namespace App\GraphQL;
 
-use App\Utils\Command;
 use App\Utils\UciCommand;
 use GraphQL\GraphQL;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as BaseReponse;
 
+
+/**
+ * Class used for response all graphql data 
+ */
 class Response extends BaseReponse
 {
     /**
@@ -17,7 +20,7 @@ class Response extends BaseReponse
     /**
      * @var string
      */
-    public $uri = 'graphql';
+    public $uri = '/graphql';
     /**
      * @var string
      */
@@ -37,17 +40,30 @@ class Response extends BaseReponse
         }
     }
 
+    /**
+     * @param void
+     * @return bool
+     */
     public function isGraphQLRequest(): bool
     {
         return $this->request->getMethod() == $this->graphql_method &&
             $this->request->getPathInfo() === $this->getBaseUrlGraphQL();
     }
 
+    /**
+     * @param void
+     * @return string
+     */
     public function getBaseUrlGraphQl(): string
     {
-        return '/' . $this->uri;
+        return $this->uri;
     }
 
+    /**
+     * Return default 404 error response
+     * @param void
+     * @return string
+     */
     public function getNotFound(): string
     {
         return json_encode([
@@ -57,7 +73,6 @@ class Response extends BaseReponse
 
     /**
      * Sends HTTP headers and content.
-     *
      * @return $this
      */
     public function send()
@@ -98,7 +113,6 @@ class Response extends BaseReponse
         );
         $output = $result->toArray();
         $output = UciCommand::getUciConfiguration();
-        // $output = explode(PHP_EOL, Command::execute("uci show"));
 
         return json_encode($output);
     }

@@ -2,13 +2,19 @@
 
 namespace App\Utils;
 
+/**
+ * Class used for execute commands in shell
+ */
 class Command
 {
-    public const NOT_FOUND = 'not found';
-
+    /**
+     * Return a string with the stdoutput and stderr for the command executed
+     * @param string
+     * @return string
+     */
     public static function execute(string $command): string
     {
-        // Redirect stderr to stdout
+        /* Using 2>&1 we redirect stderr to stdout */
         return shell_exec("$command 2>&1") ?: '';
     }
 }

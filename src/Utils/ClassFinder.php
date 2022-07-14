@@ -2,14 +2,22 @@
 
 namespace App\Utils;
 
+/**
+ * Class used for find classes in namespace
+ */
 class ClassFinder
 {
-    //This value should be the directory that contains composer.json
     /**
+     * This value should be the directory that contains composer.json
      * @var string
      */
     public const APP_ROOT = __DIR__ . '/../../';
 
+    /**
+     * This method is an autoloader if a class is not founded with psr-4 standard
+     * @param void
+     * @return void
+     */
     private static function autoloadClasses()
     {
         spl_autoload_register(function ($class) {
@@ -29,9 +37,10 @@ class ClassFinder
      * Search all classes defined in the namespace using autoloading
      * based in psr-4 standard, only serach in the directory and a level
      * for subdirectories.
+     * @param string
      * @return array
      */
-    public static function getClassesInNamespace($namespace)
+    public static function getClassesInNamespace(string $namespace): array
     {
         $directory = self::getNamespaceDirectory($namespace);
         $files = scandir($directory);
@@ -59,7 +68,12 @@ class ClassFinder
         });
     }
 
-    private static function getDefinedNamespaces()
+    /**
+     * Return the standard autoload psr-4 definition in composer.json
+     * @param void
+     * @return array
+     */
+    private static function getDefinedNamespaces() : array
     {
         $composerJsonPath = self::APP_ROOT . 'composer.json';
         $composerConfig = json_decode(file_get_contents($composerJsonPath));
@@ -67,6 +81,11 @@ class ClassFinder
         return (array) $composerConfig->autoload->{'psr-4'};
     }
 
+    /**
+     * Returns the namespace directory if it exists or false otherwise
+     * @param string
+     * @return string|bool
+     */
     private static function getNamespaceDirectory($namespace)
     {
         $composerNamespaces = self::getDefinedNamespaces();

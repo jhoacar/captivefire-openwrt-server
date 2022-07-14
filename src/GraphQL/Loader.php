@@ -4,14 +4,22 @@ namespace App\GraphQL;
 
 use App\Utils\ClassFinder;
 
+/**
+ * Contract to load all the fields in GraphQL.
+ */
 interface ILoader
 {
     /**
-     * This is a method to resolve the fields.
+     * Returns all fields for GraphQL for each implementation.
+     * @return array
      */
     public static function getFields(): array;
 }
 
+/**
+ * Trait (class) used by dependency injection
+ * to search for classes found in the namespace.
+ */
 trait Loader
 {
     /**
@@ -37,7 +45,10 @@ trait Loader
 
     /**
      * This function load all classes using this namespace,
-     * calling a specified static method.
+     * Call each one using specific method
+     * Load $fields and $classes attributes with his information.
+     * @param void
+     * @return void
      */
     private function searchFields(): void
     {

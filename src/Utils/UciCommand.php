@@ -4,20 +4,56 @@ namespace App\Utils;
 
 use stdClass;
 
+/**
+ * Class used for execute uci commands in the system
+ */
 class UciCommand extends Command
 {
-    public static function get(string $config, string $section, string $option): string
+    /**
+     * This is the text that shows the uci system when a resource is not found
+     * @var string
+     */
+    public const NOT_FOUND = 'not found';
+    
+    /**
+     * Return a string to use in a command shell
+     * @param string
+     * @return string
+     */
+    private static function cleanInput($input): string
     {
-        $config = escapeshellcmd(escapeshellarg($config));
-        $section = escapeshellcmd(escapeshellarg($section));
-        $option = escapeshellcmd(escapeshellarg($option));
-        $result = parent::execute("uci get $config.$section.$option");
-
-        return !strlen($result) || str_contains($result, 'not found') ? '' : $result;
+        return escapeshellcmd(escapeshellarg($input));
     }
 
     /**
-     * @return int index in the string between [] or -1
+     * Return the output for the specified resource
+     * Validate the each field used as input
+     * Also if the resource is not found return an empty string
+     * @param string $config file to find in /etc/config for default
+     * @param string $section to find in the config
+     * @param string $option to find in the section for the config
+     * @return string
+     */
+    public static function get(string $config, string $section, string $option): string
+    {
+        $config = self::cleanInput($config);
+        $section = self::cleanInput($section);
+        $option = self::cleanInput($option);
+        $result = parent::execute("uci get $config.$section.$option");
+
+        return !strlen($result) || str_contains($result, self::NOT_FOUND) ? '' : $result;
+    }
+
+    /**
+     * Return an index in the string contained between [] or -1 otherwise
+     * For example:
+     *         For the input => '@system[14]'
+     *         You obtain => 14
+     *          
+     *         For the input => 'system20'
+     *         You obtain => -1
+     * @param string name section
+     * @return int 
      */
     private static function getIndexSection(string $section): int
     {
@@ -31,7 +67,15 @@ class UciCommand extends Command
     }
 
     /**
-     * @return string string contained between @ and [
+     * Return the name section that is contained between @ and [ or same string otherwise
+     * For example:
+     *          For the input => '@system[14]'
+     *          You obtain => 'system'
+     * 
+     *          For the input => 'system20'
+     *          You obtain => 'system20'
+     * @param string name section
+     * @return string 
      */
     private static function getNameSection(string $section): string
     {
@@ -45,7 +89,22 @@ class UciCommand extends Command
     }
 
     /**
-     * @return array uciConfig
+     * Return an object with the representation for the UCI System
+     * 
+     * For example:
+     *  {
+     *      app:{
+     *          port
+     *      }
+     *  }
+     * 
+     * - If a section is an array is saved as a Array
+     *  - This array is saved with the position described by the uci system
+     * 
+     * - If a section is not an array, so it's saved as a stdClass
+     *  - This stdClass has a attribute 'options' for each option in this section
+     * @param void
+     * @return array
      */
     public static function getUciConfiguration(): array
     {
@@ -55,6 +114,7 @@ class UciCommand extends Command
 
         $uciConfig = [];
         $configurations = explode(PHP_EOL, parent::execute('uci show'));
+
         foreach ($configurations as $info) {
             $information = explode('.', $info);
 
@@ -70,7 +130,7 @@ class UciCommand extends Command
                 $uciConfig[$config] = [];
             }
 
-            // If section is an Array
+            /* If section is an Array */
             $isArraySection = str_contains($section, '@');
             $indexArraySection = $isArraySection ? self::getIndexSection($section) : -1;
             $section = self::getNameSection($section);
