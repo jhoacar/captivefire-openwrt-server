@@ -5,9 +5,10 @@ namespace App\GraphQL\Queries;
 use App\GraphQL\ILoader;
 use App\GraphQL\Queries\Uci\UciType;
 
-class Uci implements ILoader
+class Query implements ILoader
 {
     private static $uci;
+
     /**
      * @return UciType
      */
@@ -16,13 +17,12 @@ class Uci implements ILoader
         return self::$uci ?: (self::$uci = new UciType());
     }
 
-
     public static function getFields(): array
     {
         return [
             'uci' => [
-                'type' => self::uci()
-            ]
+                'type' => self::uci(),
+            ],
         ];
     }
 }

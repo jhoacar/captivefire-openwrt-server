@@ -42,9 +42,18 @@
     "scripts": {
         "auto-scripts": {},
         "post-install-cmd": [],
-        "post-update-cmd": [],
-        "test": "phpunit tests",
-        "fix": "php-cs-fixer fix . --config=.php-cs-fixer.php --using-cache=no --allow-risky=yes"
+        "post-update-cmd": [
+            "git config core.hooksPath .githooks"
+        ],
+        "test": [
+            "phpunit tests"
+        ],
+        "sniff": [
+            "./vendor/bin/php-cs-fixer fix -vvv --dry-run --show-progress=dots"
+        ],
+        "lint": [
+            "./vendor/bin/php-cs-fixer fix -vvv --show-progress=dots"
+        ]
     },
     "conflict": {},
     "extra": {},

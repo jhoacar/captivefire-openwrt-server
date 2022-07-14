@@ -10,10 +10,10 @@ class WebSocketUser
     public $handshake = false;
 
     public $handlingPartialPacket = false;
-    public $partialBuffer = "";
+    public $partialBuffer = '';
 
     public $sendingContinuous = false;
-    public $partialMessage = "";
+    public $partialMessage = '';
 
     public $hasSentClose = false;
 

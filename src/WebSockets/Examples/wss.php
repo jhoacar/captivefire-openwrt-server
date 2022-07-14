@@ -9,14 +9,14 @@ $ssl = ['ssl' => [
           'disable_compression' => true,             // TLS compression attack vulnerability
           'verify_peer'         => false,            // Set this to true if acting as an SSL client
           'ssltransport' => $transport,              // Transport Methods such as 'tlsv1.1', tlsv1.2'
-        ] ];
+        ]];
 $ssl_context = stream_context_create($ssl);
-$server = stream_socket_server($transport . '://' . $host . ':' . $port, $errno, $errstr, STREAM_SERVER_BIND|STREAM_SERVER_LISTEN, $ssl_context);
+$server = stream_socket_server($transport . '://' . $host . ':' . $port, $errno, $errstr, STREAM_SERVER_BIND | STREAM_SERVER_LISTEN, $ssl_context);
 if (!$server) {
     die("$errstr ($errno)");
 }
 $clients = [$server];
-$write  = null;
+$write = null;
 $except = null;
 while (true) {
     $changed = $clients;
@@ -49,13 +49,13 @@ while (true) {
             unset($clients[$found_socket]);
         }
         $unmasked = unmask($buffer);
-        if ($unmasked != "") {
+        if ($unmasked != '') {
             echo "\nReceived a Message from $ip:\n\"$unmasked\" \n";
         }
         $response = mask($unmasked);
         send_message($clients, $response);
     }
-    echo "Ey ";
+    echo 'Ey ';
 }
 fclose($server);
 
@@ -72,10 +72,11 @@ function unmask($text)
         $masks = substr($text, 2, 4);
         $data = substr($text, 6);
     }
-    $text = "";
-    for ($i = 0; $i < strlen($data); ++$i) {
+    $text = '';
+    for ($i = 0; $i < strlen($data); $i++) {
         $text .= $data[$i] ^ $masks[$i % 4];
     }
+
     return $text;
 }
 function mask($text)
@@ -89,7 +90,8 @@ function mask($text)
     } elseif ($length >= 65536) {
         $header = pack('CCNN', $b1, 127, $length);
     }
-    return $header.$text;
+
+    return $header . $text;
 }
 function handshake($client, $rcvd, $host, $port)
 {
@@ -104,11 +106,11 @@ function handshake($client, $rcvd, $host, $port)
     $secKey = $headers['Sec-WebSocket-Key'];
     $secAccept = base64_encode(pack('H*', sha1($secKey . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
     //hand shaking header
-    $upgrade  = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" .
+    $upgrade = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" .
     "Upgrade: websocket\r\n" .
     "Connection: Upgrade\r\n" .
     "WebSocket-Origin: $host\r\n" .
-    "WebSocket-Location: wss://$host:$port\r\n".
+    "WebSocket-Location: wss://$host:$port\r\n" .
     "Sec-WebSocket-Version: 13\r\n" .
     "Sec-WebSocket-Accept:$secAccept\r\n\r\n";
     fwrite($client, $upgrade);

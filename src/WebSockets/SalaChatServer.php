@@ -14,11 +14,13 @@ class SalaChatServer extends WebSocketServer
             }
         }
     }
+
     // Called after the handshake response is sent to the client.
     public function connected($user)
     {
         echo 'user connected' . PHP_EOL;
     }
+
     // Called after the connection is closed.
     public function closed($user)
     {
@@ -26,8 +28,7 @@ class SalaChatServer extends WebSocketServer
     }
 }
 
-
-$chatServer = new SalaChatServer("localhost", "9000");
+$chatServer = new SalaChatServer('localhost', '9000');
 try {
     $chatServer->run();
 } catch (Exception $e) {

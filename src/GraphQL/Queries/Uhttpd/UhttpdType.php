@@ -25,7 +25,7 @@ class UhttpdType extends ObjectType
                 } else {
                     return $value->{$info->fieldName};
                 }
-            }
+            },
         ];
         parent::__construct($config);
     }
@@ -33,6 +33,7 @@ class UhttpdType extends ObjectType
     private function listen_http()
     {
         $resolver = require_once 'Resolvers/UciCommand.php';
+
         return [
             'name' => 'listen_http',
             'type' => Type::string(),

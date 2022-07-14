@@ -5,22 +5,22 @@
 
 // Certificate data:
 $dn = [
-    "countryName" => "UK",
-    "stateOrProvinceName" => "Somerset",
-    "localityName" => "Glastonbury",
-    "organizationName" => "The Brain Room Limited",
-    "organizationalUnitName" => "PHP Documentation Team",
-    "commonName" => "Wez Furlong",
-    "emailAddress" => "wez@example.com"
+    'countryName' => 'UK',
+    'stateOrProvinceName' => 'Somerset',
+    'localityName' => 'Glastonbury',
+    'organizationName' => 'The Brain Room Limited',
+    'organizationalUnitName' => 'PHP Documentation Team',
+    'commonName' => 'Wez Furlong',
+    'emailAddress' => 'wez@example.com',
 ];
 
 // Generate certificate
 $privkey = openssl_pkey_new();
-$cert    = openssl_csr_new($dn, $privkey);
-$cert    = openssl_csr_sign($cert, null, $privkey, 365);
+$cert = openssl_csr_new($dn, $privkey);
+$cert = openssl_csr_sign($cert, null, $privkey, 365);
 
 // Generate PEM file
-# Optionally change the passphrase from 'comet' to whatever you want, or leave it empty for no passphrase
+// Optionally change the passphrase from 'comet' to whatever you want, or leave it empty for no passphrase
 $pem_passphrase = 'comet';
 $pem = [];
 openssl_x509_export($cert, $pem[0]);
@@ -48,7 +48,6 @@ if (!$server) {
     die("$errstr ($errno)" . PHP_EOL);
 }
 
-
 declare(ticks=1);
 // pcntl_async_signals(true);                                    // Allow posix signal handling
 
@@ -61,16 +60,16 @@ function shutdown()
     stream_socket_shutdown($server, STREAM_SHUT_WR); // (deshabilita recepciones y transmisiones).
     exit;                                                // Clean quit
 }
-pcntl_signal(SIGINT, "shutdown");                         // Catch SIGINT, run shutdown()
+pcntl_signal(SIGINT, 'shutdown');                         // Catch SIGINT, run shutdown()
 
 while (true) {
 
     // pcntl_signal_dispatch();
     $buffer = '';
-    print "waiting...";
+    echo 'waiting...';
     $client = stream_socket_accept($server, 36000);
     if ($client) {
-        print "accepted " . stream_socket_get_name($client, true) . "\n";
+        echo 'accepted ' . stream_socket_get_name($client, true) . "\n";
         // Read until double CRLF
         while (!preg_match('/\r?\n\r?\n/', $buffer)) {
             $buffer .= fread($client, 2046);
@@ -80,10 +79,10 @@ while (true) {
             . "Connection: close\r\n"
             . "Content-Type: text/html\r\n"
             . "\r\n"
-            . "Hello World! " . microtime(true)
+            . 'Hello World! ' . microtime(true)
             . "<pre>{$buffer}</pre>");
         fclose($client);
     } else {
-        print "error.\n";
+        echo "error.\n";
     }
 }

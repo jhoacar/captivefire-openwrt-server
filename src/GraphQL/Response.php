@@ -2,8 +2,6 @@
 
 namespace App\GraphQL;
 
-use App\GraphQL\Queries\Uci\UciType;
-use App\GraphQL\Schema;
 use App\Utils\Command;
 use App\Utils\UciCommand;
 use GraphQL\GraphQL;
@@ -19,7 +17,7 @@ class Response extends BaseReponse
     /**
      * @var string
      */
-    public $uri = "graphql";
+    public $uri = 'graphql';
     /**
      * @var string
      */
@@ -53,7 +51,7 @@ class Response extends BaseReponse
     public function getNotFound(): string
     {
         return json_encode([
-            'error' => 'Not found in server'
+            'error' => 'Not found in server',
         ]);
     }
 
@@ -74,12 +72,13 @@ class Response extends BaseReponse
             $this->setContent(json_encode(['error' => $error->getMessage()]));
         } finally {
             $this->headers->set('Content-Type', 'application/json');
+
             return parent::send();
         }
     }
 
     /**
-     * Execute Query for GraphQL
+     * Execute Query for GraphQL.
      * @return string
      */
     public function getContentGraphQL(): string

@@ -7,7 +7,7 @@ use App\Utils\ClassFinder;
 interface ILoader
 {
     /**
-     * This is a method to resolve the fields
+     * This is a method to resolve the fields.
      */
     public static function getFields(): array;
 }
@@ -17,7 +17,7 @@ trait Loader
     /**
      * @var string
      */
-    private $method = "getFields";
+    private $method = 'getFields';
     /**
      * @var string
      */
@@ -37,7 +37,7 @@ trait Loader
 
     /**
      * This function load all classes using this namespace,
-     * calling a specified static method
+     * calling a specified static method.
      */
     private function searchFields(): void
     {

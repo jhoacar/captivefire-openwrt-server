@@ -12,7 +12,8 @@ class UciCommand extends Command
         $section = escapeshellcmd(escapeshellarg($section));
         $option = escapeshellcmd(escapeshellarg($option));
         $result = parent::execute("uci get $config.$section.$option");
-        return !strlen($result) || str_contains($result, 'not found') ? "" : $result;
+
+        return !strlen($result) || str_contains($result, 'not found') ? '' : $result;
     }
 
     /**
@@ -25,8 +26,10 @@ class UciCommand extends Command
         if ($isFound) {
             return intval($matches[1]);
         }
+
         return -1;
     }
+
     /**
      * @return string string contained between @ and [
      */
@@ -37,6 +40,7 @@ class UciCommand extends Command
         if ($isFound) {
             return $matches[1];
         }
+
         return $section;
     }
 

@@ -8,8 +8,7 @@ class ClassFinder
     /**
      * @var string
      */
-    public const APP_ROOT = __DIR__ . "/../../";
-
+    public const APP_ROOT = __DIR__ . '/../../';
 
     private static function autoloadClasses()
     {
@@ -34,7 +33,7 @@ class ClassFinder
      */
     public static function getClassesInNamespace($namespace)
     {
-        $directory =  self::getNamespaceDirectory($namespace);
+        $directory = self::getNamespaceDirectory($namespace);
         $files = scandir($directory);
         $classes = [];
 

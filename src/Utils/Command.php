@@ -4,12 +4,12 @@ namespace App\Utils;
 
 class Command
 {
-    public const NOT_FOUND = "not found";
+    public const NOT_FOUND = 'not found';
 
     public static function execute(string $command): string
     {
         // Redirect stderr to stdout
-        return shell_exec("$command 2>&1") ?: "";
+        return shell_exec("$command 2>&1") ?: '';
     }
 }
 /*

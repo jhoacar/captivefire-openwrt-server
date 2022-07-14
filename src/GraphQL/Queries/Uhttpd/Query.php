@@ -3,11 +3,11 @@
 namespace App\GraphQL\Queries\Uhttpd;
 
 use App\GraphQL\ILoader;
-use App\GraphQL\Queries\Uhttpd\UhttpdType;
 
 class Query implements ILoader
 {
     private static $uhttpd;
+
     /**
      * @return UhttpdType
      */
@@ -16,13 +16,12 @@ class Query implements ILoader
         return self::$uhttpd ?: (self::$uhttpd = new UhttpdType());
     }
 
-
     public static function getFields(): array
     {
         return [
             'uhttpd' => [
-                'type' => self::uhttpd()
-            ]
+                'type' => self::uhttpd(),
+            ],
         ];
     }
 }

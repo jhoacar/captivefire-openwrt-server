@@ -22,9 +22,9 @@ class Schema extends BaseSchema
     /**
      * @return Schema
      */
-    public static function get(): Schema
+    public static function get(): self
     {
-        return self::$instance ?: (self::$instance = new Schema([
+        return self::$instance ?: (self::$instance = new self([
             'query' => QueryType::query(),
             'mutation' => MutationType::mutation(),
         ]));

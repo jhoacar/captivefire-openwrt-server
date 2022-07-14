@@ -14,7 +14,7 @@ class UciType extends ObjectType
      * @var array
      */
     public $forbiddenConfigurations = [
-        'ucitrack' => true
+        'ucitrack' => true,
     ];
 
     public function __construct()
@@ -25,7 +25,7 @@ class UciType extends ObjectType
             'fields' => $this->getFields(),
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
                 return $value->{$info->fieldName};
-            }
+            },
         ];
         parent::__construct($config);
     }
@@ -38,7 +38,7 @@ class UciType extends ObjectType
     public function getFields()
     {
         if ($this->fields === null) {
-            $fields       = $this->getUciFields() ?? [];
+            $fields = $this->getUciFields() ?? [];
             $this->fields = FieldDefinition::defineFieldMap($this, $fields);
         }
 
@@ -46,7 +46,7 @@ class UciType extends ObjectType
     }
 
     /**
-     * Return all fields in the uci configuration using GraphQL sintax
+     * Return all fields in the uci configuration using GraphQL sintax.
      */
     public static function getUciFields(): array
     {
@@ -62,7 +62,7 @@ class UciType extends ObjectType
                 }
             }
             $uciFields[$configName] = [
-                'type' => self::getConfigurationField($configName, $sectionFields)
+                'type' => self::getConfigurationField($configName, $sectionFields),
             ];
         }
 
@@ -77,7 +77,7 @@ class UciType extends ObjectType
             'fields' => $sectionFields,
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
                 return $value->{$info->fieldName};
-            }
+            },
         ]);
     }
 
@@ -94,13 +94,13 @@ class UciType extends ObjectType
     }
 
     /**
-     * Only load the uci sections that not match with forbiddenConfigurations
+     * Only load the uci sections that not match with forbiddenConfigurations.
      */
     private function getSectionsConfigurations()
     {
         // $this->loadUciConfigurations();
 
-        $commandExtractSections = "uci show";
+        $commandExtractSections = 'uci show';
         foreach ($this->uciFields as $nameConfig) {
             $commandToExecute = str_replace('{{name}}', $nameConfig, $commandExtractSections);
             $sections = explode(PHP_EOL, Command::execute($commandToExecute));

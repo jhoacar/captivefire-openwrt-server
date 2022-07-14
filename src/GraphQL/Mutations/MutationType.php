@@ -8,7 +8,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 
 class MutationType extends ObjectType
 {
-    /**
+    /*
      * This trait load all fields in each folder for this namespace
      */
     use Loader;
@@ -16,12 +16,12 @@ class MutationType extends ObjectType
     private static $mutation;
 
     /**
-     * Singleton Pattern
+     * Singleton Pattern.
      * @return MutationType
      */
     public static function mutation()
     {
-        return self::$mutation ?: (self::$mutation = new MutationType());
+        return self::$mutation ?: (self::$mutation = new self());
     }
 
     /*************** Singleton Pattern **************/
@@ -34,7 +34,7 @@ class MutationType extends ObjectType
             'fields' => [],
             'resolveField' => function ($val, $args, $context, ResolveInfo $info) {
                 return $this->{$info->fieldName}($val, $args, $context, $info);
-            }
+            },
         ];
         parent::__construct($config);
     }

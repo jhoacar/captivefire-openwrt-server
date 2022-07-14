@@ -42,9 +42,10 @@ class Kernel
                 'code' => $throwable->getCode(),
                 'file' => $throwable->getFile(),
                 'line' => $throwable->getLine(),
-                'trace' => $throwable->getTraceAsString()
+                'trace' => $throwable->getTraceAsString(),
             ];
             $response = new Response(json_encode($error), 500, ['Content-Type' => 'application/json']);
+
             return $response->send();
         }
     }

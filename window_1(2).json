@@ -1,0 +1,447 @@
+{
+    "acme": {
+        "acme": [
+            [
+                "state_dir",
+                "account_email",
+                "debug"
+            ]
+        ],
+        "example_wildcard": {
+            "options": [
+                "enabled",
+                "use_staging",
+                "keylength",
+                "update_uhttpd",
+                "update_nginx",
+                "update_haproxy",
+                "domains",
+                "dns",
+                "credentials",
+                "calias",
+                "dalias"
+            ]
+        },
+        "example": {
+            "options": [
+                "enabled",
+                "use_staging",
+                "keylength",
+                "update_uhttpd",
+                "update_nginx",
+                "update_haproxy",
+                "domains"
+            ]
+        }
+    },
+    "dhcp": {
+        "dnsmasq": [
+            [
+                "domainneeded",
+                "boguspriv",
+                "filterwin2k",
+                "localise_queries",
+                "rebind_protection",
+                "rebind_localhost",
+                "local",
+                "domain",
+                "expandhosts",
+                "nonegcache",
+                "authoritative",
+                "readethers",
+                "leasefile",
+                "resolvfile",
+                "nonwildcard",
+                "localservice",
+                "ednspacket_max"
+            ]
+        ],
+        "lan": {
+            "options": [
+                "interface",
+                "start",
+                "limit",
+                "leasetime",
+                "dhcpv4",
+                "dhcpv6",
+                "ra",
+                "ra_slaac",
+                "ra_flags"
+            ]
+        },
+        "wan": {
+            "options": [
+                "interface",
+                "ignore"
+            ]
+        },
+        "odhcpd": {
+            "options": [
+                "maindhcp",
+                "leasefile",
+                "leasetrigger",
+                "loglevel"
+            ]
+        }
+    },
+    "dropbear": {
+        "dropbear": [
+            [
+                "PasswordAuth",
+                "RootPasswordAuth",
+                "Port"
+            ]
+        ]
+    },
+    "firewall": {
+        "defaults": [
+            [
+                "syn_flood",
+                "input",
+                "output",
+                "forward"
+            ]
+        ],
+        "zone": [
+            [
+                "name",
+                "network",
+                "input",
+                "output",
+                "forward"
+            ],
+            [
+                "name",
+                "network",
+                "input",
+                "output",
+                "forward",
+                "masq",
+                "mtu_fix"
+            ]
+        ],
+        "forwarding": [
+            [
+                "src",
+                "dest"
+            ]
+        ],
+        "rule": [
+            [
+                "name",
+                "src",
+                "proto",
+                "dest_port",
+                "target",
+                "family"
+            ],
+            [
+                "name",
+                "src",
+                "proto",
+                "icmp_type",
+                "family",
+                "target"
+            ],
+            [
+                "name",
+                "src",
+                "proto",
+                "family",
+                "target"
+            ],
+            [
+                "name",
+                "src",
+                "proto",
+                "dest_port",
+                "family",
+                "target"
+            ],
+            [
+                "name",
+                "src",
+                "proto",
+                "src_ip",
+                "icmp_type",
+                "family",
+                "target"
+            ],
+            [
+                "name",
+                "src",
+                "proto",
+                "icmp_type",
+                "limit",
+                "family",
+                "target"
+            ],
+            [
+                "name",
+                "src",
+                "dest",
+                "proto",
+                "icmp_type",
+                "limit",
+                "family",
+                "target"
+            ],
+            [
+                "name",
+                "src",
+                "dest",
+                "proto",
+                "target"
+            ],
+            [
+                "name",
+                "src",
+                "dest",
+                "dest_port",
+                "proto",
+                "target"
+            ]
+        ]
+    },
+    "luci": {
+        "main": {
+            "options": [
+                "lang",
+                "mediaurlbase",
+                "resourcebase",
+                "ubuspath"
+            ]
+        },
+        "flash_keep": {
+            "options": [
+                "uci",
+                "dropbear",
+                "openvpn",
+                "passwd",
+                "opkg",
+                "firewall",
+                "uploads"
+            ]
+        },
+        "sauth": {
+            "options": [
+                "sessionpath",
+                "sessiontime"
+            ]
+        },
+        "ccache": {
+            "options": [
+                "enable"
+            ]
+        },
+        "themes": {
+            "options": [
+                "Bootstrap",
+                "BootstrapDark",
+                "BootstrapLight"
+            ]
+        },
+        "apply": {
+            "options": [
+                "rollback",
+                "holdoff",
+                "timeout",
+                "display"
+            ]
+        },
+        "diag": {
+            "options": [
+                "dns",
+                "ping",
+                "route"
+            ]
+        }
+    },
+    "network": {
+        "loopback": {
+            "options": [
+                "ifname",
+                "proto",
+                "ipaddr",
+                "netmask"
+            ]
+        },
+        "wan": {
+            "options": [
+                "ifname",
+                "proto"
+            ]
+        },
+        "wan6": {
+            "options": [
+                "ifname",
+                "proto"
+            ]
+        }
+    },
+    "rpcd": {
+        "rpcd": [
+            [
+                "socket",
+                "timeout"
+            ]
+        ],
+        "login": [
+            [
+                "username",
+                "password",
+                "read",
+                "write"
+            ]
+        ]
+    },
+    "socat": {
+        "http": {
+            "options": [
+                "enable",
+                "SocatOptions",
+                "user"
+            ]
+        }
+    },
+    "system": {
+        "system": [
+            [
+                "hostname",
+                "timezone",
+                "ttylogin",
+                "log_size",
+                "urandom_seed"
+            ]
+        ],
+        "ntp": {
+            "options": [
+                "enabled",
+                "enable_server",
+                "server"
+            ]
+        }
+    },
+    "ucitrack": {
+        "network": [
+            [
+                "init",
+                "affects"
+            ]
+        ],
+        "wireless": [
+            [
+                "affects"
+            ]
+        ],
+        "firewall": [
+            [
+                "init",
+                "affects"
+            ]
+        ],
+        "olsr": [
+            [
+                "init"
+            ]
+        ],
+        "dhcp": [
+            [
+                "init",
+                "affects"
+            ]
+        ],
+        "odhcpd": [
+            [
+                "init"
+            ]
+        ],
+        "dropbear": [
+            [
+                "init"
+            ]
+        ],
+        "httpd": [
+            [
+                "init"
+            ]
+        ],
+        "fstab": [
+            [
+                "exec"
+            ]
+        ],
+        "qos": [
+            [
+                "init"
+            ]
+        ],
+        "system": [
+            [
+                "init",
+                "exec",
+                "affects"
+            ]
+        ],
+        "luci_splash": [
+            [
+                "init"
+            ]
+        ],
+        "upnpd": [
+            [
+                "init"
+            ]
+        ],
+        "ntpclient": [
+            [
+                "init"
+            ]
+        ],
+        "samba": [
+            [
+                "init"
+            ]
+        ],
+        "tinyproxy": [
+            [
+                "init"
+            ]
+        ]
+    },
+    "uhttpd": {
+        "captivefire": {
+            "options": [
+                "listen_http",
+                "listen_https",
+                "redirect_https",
+                "interpreter",
+                "no_dirlists",
+                "home",
+                "index_file",
+                "index_page",
+                "error_page",
+                "cert",
+                "key"
+            ]
+        },
+        "luci": {
+            "options": [
+                "listen_https",
+                "home",
+                "rfc1918_filter",
+                "max_requests",
+                "max_connections",
+                "cert",
+                "key",
+                "cgi_prefix",
+                "lua_prefix",
+                "script_timeout",
+                "network_timeout",
+                "http_keepalive",
+                "tcp_keepalive",
+                "ubus_prefix"
+            ]
+        }
+    }
+}

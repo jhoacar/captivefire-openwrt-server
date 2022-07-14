@@ -8,7 +8,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 
 class QueryType extends ObjectType
 {
-    /**
+    /*
      * This trait load all fields in each folder for this namespace
      */
     use Loader;
@@ -18,14 +18,13 @@ class QueryType extends ObjectType
      */
     private static $query;
 
-
     /**
-     * Singleton Pattern
+     * Singleton Pattern.
      * @return QueryType
      */
     public static function query()
     {
-        return self::$query ?: (self::$query = new QueryType());
+        return self::$query ?: (self::$query = new self());
     }
 
     /*************** Singleton Pattern **************/
@@ -42,9 +41,9 @@ class QueryType extends ObjectType
                 if (method_exists($this, $method)) {
                     return $this->{$method}($value, $args, $context, $info);
                 } else {
-                    return "";
+                    return '';
                 }
-            }
+            },
         ];
         parent::__construct($config);
     }
