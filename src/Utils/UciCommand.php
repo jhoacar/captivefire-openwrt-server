@@ -97,12 +97,7 @@ class UciCommand extends Command
      *          port
      *      }
      *  }
-     *
-     * - If a section is an array is saved as a Array
-     *  - This array is saved with the position described by the uci system
-     *
-     * - If a section is not an array, so it's saved as a stdClass
-     *  - This stdClass has a attribute 'options' for each option in this section
+     * 
      * @param void
      * @return array
      */
@@ -130,34 +125,55 @@ class UciCommand extends Command
                 $uciConfig[$config] = [];
             }
 
-            /* If section is an Array */
-            $isArraySection = str_contains($section, '@');
-            $indexArraySection = $isArraySection ? self::getIndexSection($section) : -1;
-            $section = self::getNameSection($section);
-
-            if ($isArraySection) {
-                if (empty($uciConfig[$config][$section])) {
-                    $uciConfig[$config][$section] = [];
-                }
-
-                if (empty($uciConfig[$config][$section][$indexArraySection])) {
-                    $uciConfig[$config][$section][$indexArraySection] = [];
-                }
-
-                array_push($uciConfig[$config][$section][$indexArraySection], $option);
-            } else {
-                if (empty($uciConfig[$config][$section])) {
-                    $uciConfig[$config][$section] = new stdClass();
-                }
-
-                if (empty($uciConfig[$config][$section]->options)) {
-                    $uciConfig[$config][$section]->options = [];
-                }
-
-                array_push($uciConfig[$config][$section]->options, $option);
-            }
+            self::getUciSection($uciConfig[$config][$section], $section, $option);
         }
 
         return $uciConfig;
+    }
+
+    /**
+     * 
+     * - If a section is an array is saved as a Array
+     *      
+     *      - This array is saved with the position described by the uci system
+     *
+     * - If a section is not an array, so it's saved as a stdClass
+     *      
+     *      - This stdClass has an attribute 'options' for each option in this section
+     *
+     * @param array &$configSection
+     * @param string $sectionName
+     * @param string $optionName
+     */
+    private static function getUciSection(&$configSection, $sectionName, $optionName)
+    {
+        $isArraySection = str_contains($sectionName, '@');
+        $indexArraySection = $isArraySection ? self::getIndexSection($sectionName) : -1;
+        $sectionName = self::getNameSection($sectionName);
+
+        if ($isArraySection) {
+
+            if (empty($configSection)) {
+                $configSection = [];
+            }
+
+            if (empty($configSection[$indexArraySection])) {
+                $configSection[$indexArraySection] = [];
+            }
+
+            array_push($configSection[$indexArraySection], $optionName);
+
+        } else {
+            
+            if (empty($configSection)) {
+                $configSection = new stdClass();
+            }
+
+            if (empty($configSection->options)) {
+                $configSection->options = [];
+            }
+
+            array_push($configSection->options, $optionName);
+        }
     }
 }
