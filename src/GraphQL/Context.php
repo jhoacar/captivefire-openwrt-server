@@ -9,13 +9,11 @@
 
 namespace App\GraphQL;
 
-use Symfony\Component\HttpFoundation\Request;
-
 /**
  * Class used by send all the information inside each resolver for GraphQL.
- * 
+ *
  * @author Jhoan Carrero <jhoacar@captivefire.net>
- * 
+ *
  * @api
  */
 class Context
@@ -28,7 +26,7 @@ class Context
     /**
      * Constructor.
      * @param void
-     * 
+     *
      * @api
      */
     public function __construct()
