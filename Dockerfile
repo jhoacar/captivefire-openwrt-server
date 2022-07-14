@@ -21,7 +21,7 @@ ENV UID=$UID
 ARG USERNAME=captivefire
 ENV USERNAME=$USERNAME
 
-ARG FOLDER=/app
+ARG FOLDER=/app/
 ENV FOLDER=$FOLDER
 
 ARG CONSOLE=/bin/bash
@@ -71,8 +71,8 @@ ENV COMPANYEMAIL=$COMPANYEMAIL
 #         -sha256 \
 #         -days 3650 \
 #         -nodes \
-#         -out $COMPANYNAME.crt \
-#         -keyout $COMPANYNAME.key \
+#         -out $FOLDER$COMPANYNAME.crt \
+#         -keyout $FOLDER$COMPANYNAME.key \
 #             << EOF \
 #             $COUNTRYCODE \
 #             $STATE \
