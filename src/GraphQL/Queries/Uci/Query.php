@@ -1,9 +1,8 @@
 <?php
 
-namespace App\GraphQL\Queries;
+namespace App\GraphQL\Queries\Uci;
 
 use App\GraphQL\ILoader;
-use App\GraphQL\Queries\Uci\UciType;
 
 /**
  * Class used for load all the uci type in GraphQL.

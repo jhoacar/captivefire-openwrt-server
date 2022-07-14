@@ -7,6 +7,7 @@ use App\Utils\UciCommand;
 use GraphQL\Type\Definition\FieldDefinition;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
 
 /**
  * Class used for load all schema for the UCI System in GraphQL.
@@ -19,18 +20,40 @@ class UciType extends ObjectType
     public $forbiddenConfigurations = [
         'ucitrack' => true,
     ];
+    /**
+     * @var Clousure|function
+     */
+    private $globalResolver;
 
     public function __construct()
     {
+        $this->globalResolver = require_once 'Resolvers/UciCommand.php';
+
         $config = [
             'name' => 'uci',
             'description' => 'Router Configuration',
             'fields' => $this->getFields(),
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
-                return $value->{$info->fieldName};
+                return ''; //$value->{$info->fieldName};
             },
         ];
         parent::__construct($config);
+    }
+
+    /**
+     * Return an array with unique keys for each array
+     * @param array
+     * @return array
+     */
+    private static function getUniqueKeys($section): array
+    {
+        /* Load All Unique Keys for the array */
+        $allOptions = [];
+        foreach ($section as $options) {
+            foreach ($options as $optionName)
+                $allOptions[$optionName] = true;
+        }
+        return array_keys($allOptions);
     }
 
     /**
@@ -58,68 +81,71 @@ class UciType extends ObjectType
 
         $uciFields = [];
         foreach ($config as $configName => $sections) {
-            $sectionFields = [];
 
-            foreach ($sections as $section) {
-                if (is_array($section)) {
-                } elseif (is_object($section)) {
+            $configFields = [];
+
+            foreach ($sections as $sectionName => $section) {
+
+                $sectionFields = [];
+                $isArraySection = is_array($section);
+
+                $allOptions = $isArraySection ? self::getUniqueKeys($section) : $section->options;
+
+                foreach ($allOptions as $optionName) {
+                    $sectionFields[$optionName] = self::getOptionType($configName, $sectionName, $optionName);
                 }
+
+                $configFields[$sectionName] = [
+                    'type' => self::getSectionType($configName, $sectionName, $sectionFields, $isArraySection)
+                ];
             }
             $uciFields[$configName] = [
-                'type' => self::getConfigurationField($configName, $sectionFields),
+                'type' => self::getConfigurationType($configName, $configFields),
             ];
         }
 
         return $uciFields;
     }
 
-    private static function getConfigurationField($configName, $sectionFields)
+    private static function getConfigurationType($configName, $configFields)
     {
         return new ObjectType([
             'name' => $configName,
-            'description' => "UCI Configuration $configName",
-            'fields' => $sectionFields,
+            'description' => "$configName UCI Configuration",
+            'fields' => $configFields,
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
                 return $value->{$info->fieldName};
             },
         ]);
     }
 
-    private function getSectionField($sectionName, $isArray)
+    private static function getSectionType($configName, $sectionName, $sectionFields, $isArray)
     {
+        $configObject = [
+            'name' => $configName . '_' . $sectionName,
+            'description' => "Section $sectionName for $configName",
+            'fields' => $sectionFields,
+            'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
+                return ''; // $value->{$info->fieldName};
+            },
+        ];
+        $configArray = [
+            /* Plural section */
+            'name' => 'listOf' . ucfirst($sectionName),
+            'description' => "List of $sectionName section for $configName",
+            'type' => Type::listOf(new ObjectType($configObject)),
+        ];
+
+        return new ObjectType($isArray ? $configArray : $configObject);
     }
 
-    private function getOptionField($optionName)
+    private static function getOptionType($configName, $sectionName, $optionName)
     {
-    }
-
-    private function getOptionsConfigurations()
-    {
-    }
-
-    /**
-     * Only load the uci sections that not match with forbiddenConfigurations.
-     */
-    private function getSectionsConfigurations()
-    {
-        // $this->loadUciConfigurations();
-
-        $commandExtractSections = 'uci show';
-        foreach ($this->uciFields as $nameConfig) {
-            $commandToExecute = str_replace('{{name}}', $nameConfig, $commandExtractSections);
-            $sections = explode(PHP_EOL, Command::execute($commandToExecute));
-            $forbiddenSections = $this->forbiddenConfigurations[$nameConfig] ?? [];
-            foreach ($sections as $nameSection) {
-                $forbidden = false;
-                foreach ($forbiddenSections as $forbiddenName => $options) {
-                    if ($nameSection === $forbiddenName) {
-                        $forbidden = true;
-                    }
-                }
-                if (!$forbidden) {
-                    $this->uciFields[$nameConfig][$nameSection] = [];
-                }
-            }
-        }
+        return [
+            'name' => $optionName,
+            'description' => "Option $optionName for $sectionName in $configName configuration",
+            'type' => Type::string(),
+            'resolve' => require_once 'Resolvers/UciCommand.php', //self::$globalResolver,
+        ];
     }
 }
