@@ -87,22 +87,24 @@ class Response extends BaseReponse
         } finally {
             $this->loadJSONResponse();
             $this->loadCORS();
+
             return parent::send();
         }
     }
 
     /**
-     * Load Json Response
+     * Load Json Response.
      * @param void
      * @return void
      */
     private function loadJSONResponse()
     {
+        $this->headers->set('Cache-Control', 'no-cache');
         $this->headers->set('Content-Type', 'application/json');
     }
 
     /**
-     * Load the CORS policy
+     * Load the CORS policy.
      * @param void
      * @return void
      */
