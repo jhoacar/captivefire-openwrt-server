@@ -27,6 +27,6 @@ services:
       - 443:443 # HTTPS Port
       - 8080:8080
     volumes:
-      - ./docker/etc/config/uhttpd:/etc/config/uhttpd
+      - ./docker/etc/config:/etc/config
       - ./docker/etc/php.ini:/etc/php.ini
       - .:/app
