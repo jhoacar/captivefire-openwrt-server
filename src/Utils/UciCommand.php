@@ -111,7 +111,6 @@ class UciCommand extends Command
         $configurations = explode(PHP_EOL, parent::execute('uci show'));
 
         foreach ($configurations as $info) {
-            
             [$info, $content] = explode('=', $info);
             $information = explode('.', $info);
 

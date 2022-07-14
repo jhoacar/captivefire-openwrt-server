@@ -98,7 +98,6 @@ class UciType extends ObjectType
             $uciFields[$configName] = $this->getConfigurationType($configName, $configFields);
         }
 
-
         return $uciFields;
     }
 
@@ -122,10 +121,11 @@ class UciType extends ObjectType
             'name' => $configName . '_' . $sectionName,
             'fields' => $sectionFields,
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
-                if ($value instanceof stdClass)
+                if ($value instanceof stdClass) {
                     return $value->options[$info->fieldName];
-                else
+                } else {
                     return $value[$info->fieldName] ?? null;
+                }
             },
         ];
 
@@ -134,7 +134,7 @@ class UciType extends ObjectType
             'description' => "List of $sectionName section for $configName",
             'type' => Type::listOf(new ObjectType($configObject)),
             'resolve' => function ($value, $args, $context, ResolveInfo $info) {
-                return $value[$info->fieldName];    
+                return $value[$info->fieldName];
             },
         ];
 
@@ -149,7 +149,7 @@ class UciType extends ObjectType
         return [
             'name' => $optionName,
             'description' => "Option $optionName for $sectionName in $configName configuration",
-            'type' => Type::string()
+            'type' => Type::string(),
         ];
     }
 }

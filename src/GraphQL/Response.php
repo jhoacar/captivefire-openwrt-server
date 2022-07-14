@@ -2,7 +2,6 @@
 
 namespace App\GraphQL;
 
-use App\GraphQL\Queries\Uci\UciType;
 use App\Utils\UciCommand;
 use GraphQL\GraphQL;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,10 +85,32 @@ class Response extends BaseReponse
         } catch (\Throwable $error) {
             $this->setContent(json_encode(['error' => $error->getMessage()]));
         } finally {
-            $this->headers->set('Content-Type', 'application/json');
-
+            $this->loadJSONResponse();
+            $this->loadCORS();
             return parent::send();
         }
+    }
+
+    /**
+     * Load Json Response
+     * @param void
+     * @return void
+     */
+    private function loadJSONResponse()
+    {
+        $this->headers->set('Content-Type', 'application/json');
+    }
+
+    /**
+     * Load the CORS policy
+     * @param void
+     * @return void
+     */
+    private function loadCORS()
+    {
+        /* CORS Policy */
+        $this->headers->set('Access-Control-Allow-Origin', '*');
+        $this->headers->set('Access-Control-Allow-Methods', '*');
     }
 
     /**
