@@ -85,8 +85,8 @@ class Response extends BaseReponse
         } catch (\Throwable $error) {
             $this->setContent(json_encode(['error' => $error->getMessage()]));
         } finally {
-            $this->loadJSONResponse();
-            $this->loadCORS();
+            $this->setJsonHeaders();
+            $this->setCorsHeaders();
 
             return parent::send();
         }
@@ -97,7 +97,7 @@ class Response extends BaseReponse
      * @param void
      * @return void
      */
-    private function loadJSONResponse()
+    private function setJsonHeaders()
     {
         $this->headers->set('Cache-Control', 'no-cache');
         $this->headers->set('Content-Type', 'application/json');
@@ -108,7 +108,7 @@ class Response extends BaseReponse
      * @param void
      * @return void
      */
-    private function loadCORS()
+    private function setCorsHeaders()
     {
         /* CORS Policy */
         $this->headers->set('Access-Control-Allow-Origin', '*');

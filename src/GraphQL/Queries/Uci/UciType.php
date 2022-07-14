@@ -149,7 +149,7 @@ class UciType extends ObjectType
         return [
             'name' => $optionName,
             'description' => "Option $optionName for $sectionName in $configName configuration",
-            'type' => Type::string(),
+            'type' => Type::listOf(Type::string()),
         ];
     }
 }

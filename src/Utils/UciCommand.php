@@ -121,6 +121,7 @@ class UciCommand extends Command
             $config = $information[$CONFIGURATION];
             $section = $information[$SECTION];
             $option = explode('=', $information[$OPTIONS])[0];
+            $content = explode(' ', $content);
 
             if (empty($uciConfig[$config])) {
                 $uciConfig[$config] = [];
