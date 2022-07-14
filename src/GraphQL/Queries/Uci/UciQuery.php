@@ -7,7 +7,7 @@ use App\GraphQL\ILoader;
 /**
  * Class used for load all the uci type in GraphQL.
  */
-class Query implements ILoader
+class UciQuery implements ILoader
 {
     /**
      * @var UciType
@@ -17,7 +17,7 @@ class Query implements ILoader
     /**
      * @return UciType
      */
-    public static function uci()
+    private static function uci()
     {
         return self::$uci ?: (self::$uci = new UciType());
     }

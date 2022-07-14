@@ -7,6 +7,7 @@ use GraphQL\Type\Definition\FieldDefinition;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
+use stdClass;
 
 /**
  * Class used for load all schema for the UCI System in GraphQL.
@@ -20,20 +21,18 @@ class UciType extends ObjectType
         'ucitrack' => true,
     ];
     /**
-     * @var Clousure|function
+     * @var array
      */
-    private $globalResolver;
+    private $uciInfo = [];
 
     public function __construct()
     {
-        $this->globalResolver = require_once 'Resolvers/UciCommand.php';
-
         $config = [
             'name' => 'uci',
             'description' => 'Router Configuration',
             'fields' => $this->getFields(),
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
-                return ''; //$value->{$info->fieldName};
+                return $this->uciInfo[$info->fieldName];
             },
         ];
         parent::__construct($config);
@@ -44,12 +43,12 @@ class UciType extends ObjectType
      * @param array
      * @return array
      */
-    private static function getUniqueKeys($section): array
+    private function getUniqueKeys($section): array
     {
         /* Load All Unique Keys for the array */
         $allOptions = [];
         foreach ($section as $options) {
-            foreach ($options as $optionName) {
+            foreach ($options as $optionName => $content) {
                 $allOptions[$optionName] = true;
             }
         }
@@ -76,75 +75,81 @@ class UciType extends ObjectType
      * @param void
      * @return array
      */
-    public static function getUciFields(): array
+    private function getUciFields(): array
     {
-        $config = UciCommand::getUciConfiguration();
+        $this->uciInfo = UciCommand::getUciConfiguration();
 
         $uciFields = [];
-        foreach ($config as $configName => $sections) {
+        foreach ($this->uciInfo as $configName => $sections) {
             $configFields = [];
 
             foreach ($sections as $sectionName => $section) {
                 $sectionFields = [];
                 $isArraySection = is_array($section);
 
-                $allOptions = $isArraySection ? self::getUniqueKeys($section) : $section->options;
+                $allOptions = $isArraySection ? $this->getUniqueKeys($section) : array_keys($section->options);
 
                 foreach ($allOptions as $optionName) {
-                    $sectionFields[$optionName] = self::getOptionType($configName, $sectionName, $optionName);
+                    $sectionFields[$optionName] = $this->getOptionType($configName, $sectionName, $optionName);
                 }
 
-                $configFields[$sectionName] = [
-                    'type' => self::getSectionType($configName, $sectionName, $sectionFields, $isArraySection),
-                ];
+                $configFields[$sectionName] = $this->getSectionType($configName, $sectionName, $sectionFields, $isArraySection);
             }
-            $uciFields[$configName] = [
-                'type' => self::getConfigurationType($configName, $configFields),
-            ];
+            $uciFields[$configName] = $this->getConfigurationType($configName, $configFields);
         }
+
 
         return $uciFields;
     }
 
-    private static function getConfigurationType($configName, $configFields)
+    private function getConfigurationType($configName, $configFields)
     {
-        return new ObjectType([
-            'name' => $configName,
+        return [
             'description' => "$configName UCI Configuration",
-            'fields' => $configFields,
-            'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
-                return $value->{$info->fieldName};
-            },
-        ]);
+            'type' => new ObjectType([
+                'name' => $configName,
+                'fields' => $configFields,
+                'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
+                    return $value[$info->fieldName];
+                },
+            ]),
+        ];
     }
 
-    private static function getSectionType($configName, $sectionName, $sectionFields, $isArray)
+    private function getSectionType($configName, $sectionName, $sectionFields, $isArray)
     {
         $configObject = [
             'name' => $configName . '_' . $sectionName,
-            'description' => "Section $sectionName for $configName",
             'fields' => $sectionFields,
             'resolveField' => function ($value, $args, $context, ResolveInfo $info) {
-                return ''; // $value->{$info->fieldName};
+                if ($value instanceof stdClass)
+                    return $value->options[$info->fieldName];
+                else
+                    return $value[$info->fieldName] ?? null;
             },
         ];
+
         $configArray = [
-            /* Plural section */
-            'name' => 'listOf' . ucfirst($sectionName),
+            'name' => $sectionName,
             'description' => "List of $sectionName section for $configName",
             'type' => Type::listOf(new ObjectType($configObject)),
+            'resolve' => function ($value, $args, $context, ResolveInfo $info) {
+                return $value[$info->fieldName];    
+            },
         ];
 
-        return new ObjectType($isArray ? $configArray : $configObject);
+        return $isArray ? $configArray : [
+            'description' => "Section $sectionName for $configName",
+            'type' => new ObjectType($configObject),
+        ];
     }
 
-    private static function getOptionType($configName, $sectionName, $optionName)
+    private function getOptionType($configName, $sectionName, $optionName)
     {
         return [
             'name' => $optionName,
             'description' => "Option $optionName for $sectionName in $configName configuration",
-            'type' => Type::string(),
-            'resolve' => require_once 'Resolvers/UciCommand.php', //self::$globalResolver,
+            'type' => Type::string()
         ];
     }
 }

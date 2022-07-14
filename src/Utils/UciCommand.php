@@ -97,7 +97,7 @@ class UciCommand extends Command
      *          port
      *      }
      *  }
-     * 
+     *
      * @param void
      * @return array
      */
@@ -111,6 +111,8 @@ class UciCommand extends Command
         $configurations = explode(PHP_EOL, parent::execute('uci show'));
 
         foreach ($configurations as $info) {
+            
+            [$info, $content] = explode('=', $info);
             $information = explode('.', $info);
 
             if (!strlen($info) || count($information) < 3) {
@@ -125,34 +127,33 @@ class UciCommand extends Command
                 $uciConfig[$config] = [];
             }
 
-            self::getUciSection($uciConfig[$config][$section], $section, $option);
+            $sectionName = self::getNameSection($section);
+
+            self::getUciSection($uciConfig[$config][$sectionName], $section, $option, $content);
         }
 
         return $uciConfig;
     }
 
     /**
-     * 
-     * - If a section is an array is saved as a Array
-     *      
+     * - If a section is an array is saved as a Array.
+     *
      *      - This array is saved with the position described by the uci system
      *
      * - If a section is not an array, so it's saved as a stdClass
-     *      
+     *
      *      - This stdClass has an attribute 'options' for each option in this section
      *
      * @param array &$configSection
      * @param string $sectionName
      * @param string $optionName
      */
-    private static function getUciSection(&$configSection, $sectionName, $optionName)
+    private static function getUciSection(&$configSection, $sectionName, $optionName, $content)
     {
         $isArraySection = str_contains($sectionName, '@');
         $indexArraySection = $isArraySection ? self::getIndexSection($sectionName) : -1;
-        $sectionName = self::getNameSection($sectionName);
 
         if ($isArraySection) {
-
             if (empty($configSection)) {
                 $configSection = [];
             }
@@ -160,11 +161,8 @@ class UciCommand extends Command
             if (empty($configSection[$indexArraySection])) {
                 $configSection[$indexArraySection] = [];
             }
-
-            array_push($configSection[$indexArraySection], $optionName);
-
+            $configSection[$indexArraySection][$optionName] = $content;
         } else {
-            
             if (empty($configSection)) {
                 $configSection = new stdClass();
             }
@@ -173,7 +171,7 @@ class UciCommand extends Command
                 $configSection->options = [];
             }
 
-            array_push($configSection->options, $optionName);
+            $configSection->options[$optionName] = $content;
         }
     }
 }

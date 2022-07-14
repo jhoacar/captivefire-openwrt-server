@@ -3,6 +3,7 @@
 namespace App\GraphQL;
 
 use App\GraphQL\Queries\Uci\UciType;
+use App\Utils\UciCommand;
 use GraphQL\GraphQL;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as BaseReponse;
@@ -111,7 +112,7 @@ class Response extends BaseReponse
             (array) $input['variables']
         );
         $output = $result->toArray();
-        // $output = UciType::getUciFields();
+        // $output = UciCommand::getUciConfiguration();
 
         return json_encode($output);
     }
