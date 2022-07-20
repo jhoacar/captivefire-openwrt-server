@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\GraphQL\Queries;
 
-use App\GraphQL\Schema;
 use GraphQL\GraphQL;
 use PHPUnit\Framework\TestCase;
+use UciGraphQL\Schema;
 
 final class UhttpdTest extends TestCase
 {
@@ -17,8 +17,10 @@ final class UhttpdTest extends TestCase
     {
         yield 'listen_http' => [
             'query' => '{
-                uhttpd{
-                    listen_http
+                uci{
+                    uhttpd{
+                        listen_http
+                    }
                 }
             }',
             'field' => 'listen_http',
