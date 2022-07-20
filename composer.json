@@ -51,21 +51,11 @@
     "scripts": {
         "auto-scripts": {},
         "post-install-cmd": [],
-        "post-update-cmd": [
-            "git config core.hooksPath .githooks"
-        ],
-        "test": [
-            "phpunit tests"
-        ],
-        "sniff": [
-            "php-cs-fixer fix -vvv --dry-run --show-progress=dots"
-        ],
-        "lint": [
-            "php-cs-fixer fix -vvv --show-progress=dots"
-        ],
-        "phpdox": [
-            "phpdox"
-        ],
+        "post-update-cmd": "git config core.hooksPath .githooks",
+        "test": "phpunit tests",
+        "sniff": "php-cs-fixer fix -vvv --dry-run --show-progress=dots",
+        "lint": "php-cs-fixer fix -vvv --show-progress=dots",
+        "phpdox": "phpdox",
         "box": "box"
     },
     "conflict": {},
@@ -75,6 +65,11 @@
         "ext-tokenizer": "Used in friendsofphp/php-cs-fixer",
         "ext-dom": "Used in phpunit/phpunit and theseer/phpdox",
         "ext-xsl": "Used in theseer/phpdox",
-        "changePHPversion": "sudo update-alternatives --config php"
+        "changePHPversion": "sudo update-alternatives --config php",
+        "stepsRunningComposer Box": [
+            "replace in file vendor/humbug/box/src/functions.php:get_box_version function",
+            "require_once __DIR__.'/../../../../vendor/composer/InstalledVersions.php';",
+            "run composer box compile"
+        ]
     }
 }

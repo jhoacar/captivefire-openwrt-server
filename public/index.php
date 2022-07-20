@@ -10,7 +10,6 @@ use App\Kernel;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-
 define('CAPTIVEFIRE_START', microtime(true));
 
 $config = require_once dirname(__DIR__) . '/config/app.php';
