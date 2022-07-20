@@ -16,14 +16,14 @@
         "ext-iconv": "*",
         "ext-mbstring": "*",
         "jhoacar/uci-graphql-php": "^1.1",
-        "symfony/http-foundation": "^6.1|^5.4",
-        "vlucas/phpdotenv": "^5.4"
+        "symfony/http-foundation": "^6.1|^5.4"
     },
     "require-dev": {
         "ext-dom": "*",
         "ext-tokenizer": "*",
         "ext-xsl": "*",
         "friendsofphp/php-cs-fixer": "^3.9|^3.4",
+        "humbug/box": "^4.0",
         "phpunit/phpunit": "^9.0"
     },
     "config": {
@@ -63,9 +63,10 @@
         "lint": [
             "php-cs-fixer fix -vvv --show-progress=dots"
         ],
-        "phpdox" : [
+        "phpdox": [
             "phpdox"
-        ]
+        ],
+        "box": "box"
     },
     "conflict": {},
     "extra": {
