@@ -13,19 +13,18 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.3|^8.1",
-        "symfony/http-foundation": "^6.1|^5.4",
-        "webonyx/graphql-php": "^0.13.8",
-        "vlucas/phpdotenv": "^5.4",
         "ext-iconv": "*",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "jhoacar/uci-graphql-php": "^1.1",
+        "symfony/http-foundation": "^6.1|^5.4",
+        "vlucas/phpdotenv": "^5.4"
     },
     "require-dev": {
         "ext-dom": "*",
         "ext-tokenizer": "*",
         "ext-xsl": "*",
         "friendsofphp/php-cs-fixer": "^3.9|^3.4",
-        "phpunit/phpunit": "^9.0",
-        "theseer/phpdox": "^0.7"
+        "phpunit/phpunit": "^9.0"
     },
     "config": {
         "allow-plugins": {

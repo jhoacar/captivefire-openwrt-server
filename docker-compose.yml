@@ -28,5 +28,6 @@ services:
       - 8080:8080
     volumes:
       - ./docker/etc/config:/etc/config
+      - ./docker/etc/crontabs:/etc/crontabs
       - ./docker/etc/php.ini:/etc/php.ini
       - .:/app

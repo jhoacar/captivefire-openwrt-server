@@ -43,8 +43,12 @@ class Kernel
     {
         try {
             $request = Request::createFromGlobals();
+            $provider = null;
             $response = new GraphQLResponse($request, $this->graphql);
-            $response->send();
+            $response->sendGraphQL($provider);
+            if ($provider !== null) {
+                $this->loadServicesToFile($provider->getServices());
+            }
         } catch (\Throwable $throwable) {
             $error = [
                 'message' => $throwable->getMessage(),
@@ -57,5 +61,24 @@ class Kernel
 
             return $response->send();
         }
+    }
+
+    /**
+     * We load a file named services
+     * This file contains all services to restart
+     * In background there is a job processing this file
+     * and restarting all these services.
+     * @param array
+     */
+    private function loadServicesToFile($services): void
+    {
+        $servicesContent = '';
+        foreach ($services as $service) {
+            $servicesContent .= str_replace('\'', '', $service) . PHP_EOL;
+        }
+        $servicesFile = realpath(__DIR__ . '/../services');
+        $fp = fopen($servicesFile, 'a'); //opens file in append mode
+        fwrite($fp, $servicesContent);
+        fclose($fp);
     }
 }

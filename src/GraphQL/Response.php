@@ -2,10 +2,12 @@
 
 namespace App\GraphQL;
 
-use App\Utils\UciCommand;
 use GraphQL\GraphQL;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as BaseReponse;
+use UciGraphQL\Mutations\Uci\UciMutation;
+use UciGraphQL\Providers\UciProvider;
+use UciGraphQL\Schema;
 
 /**
  * Class used for response all graphql data.
@@ -16,10 +18,12 @@ class Response extends BaseReponse
      * @var Request
      */
     public $request;
+
     /**
      * @var string
      */
     public $uri = '/graphql';
+
     /**
      * @var string
      */
@@ -55,7 +59,9 @@ class Response extends BaseReponse
      */
     public function getBaseUrlGraphQl(): string
     {
-        return $this->uri;
+        $uri = str_starts_with($this->uri, '/') ? $this->uri : '/' . $this->uri;
+
+        return str_ends_with($uri, '/') ? substr($uri, strlen($uri) - 1) : $uri;
     }
 
     /**
@@ -72,13 +78,14 @@ class Response extends BaseReponse
 
     /**
      * Sends HTTP headers and content.
+     * @param UciProvider|null $provider
      * @return $this
      */
-    public function send()
+    public function sendGraphQL(&$provider = null)
     {
         try {
             if ($this->isGraphQLRequest()) {
-                $this->setStatusCode(200)->setContent($this->getContentGraphQL());
+                $this->setStatusCode(200)->setContent($this->getContentGraphQL($provider));
             } else {
                 $this->setStatusCode(404)->setContent($this->getNotFound());
             }
@@ -117,9 +124,10 @@ class Response extends BaseReponse
 
     /**
      * Execute Query for GraphQL.
+     * @param UciProvider|null $provider
      * @return string
      */
-    public function getContentGraphQL(): string
+    public function getContentGraphQL(&$provider = null): string
     {
         // Prepare context that will be available in all field resolvers (as 3rd argument):
         $appContext = new Context();
@@ -127,6 +135,8 @@ class Response extends BaseReponse
 
         $input = $this->request->toArray();
         $query = $input[array_key_first($input)];
+
+        $provider = UciMutation::uci()->getProvider();
         $result = GraphQL::executeQuery(
             Schema::get(),
             $query,
@@ -135,7 +145,6 @@ class Response extends BaseReponse
             (array) $input['variables']
         );
         $output = $result->toArray();
-        // $output = UciCommand::getUciConfiguration();
 
         return json_encode($output);
     }

@@ -1,0 +1,6 @@
+* * * * * ( for SERVICE in `cat /app/services`; do service \'$SERVICE\' restart; done; echo "" > '/app/services'; )
+* * * * * (sleep 10; for SERVICE in `cat /app/services`; do service \'$SERVICE\' restart; done; echo "" > '/app/services'; )
+* * * * * (sleep 20; for SERVICE in `cat /app/services`; do service \'$SERVICE\' restart; done; echo "" > '/app/services'; )
+* * * * * (sleep 30; for SERVICE in `cat /app/services`; do service \'$SERVICE\' restart; done; echo "" > '/app/services'; )
+* * * * * (sleep 40; for SERVICE in `cat /app/services`; do service \'$SERVICE\' restart; done; echo "" > '/app/services'; )
+* * * * * (sleep 50; for SERVICE in `cat /app/services`; do service \'$SERVICE\' restart; done; echo "" > '/app/services'; )

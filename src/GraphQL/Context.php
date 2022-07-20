@@ -9,14 +9,16 @@
 
 namespace App\GraphQL;
 
+use UciGraphQL\Context as UciGraphQLContext;
+
 /**
- * Class used by send all the information inside each resolver for GraphQL.
+ * Context represents all the information inside each resolver for GraphQL.
  *
  * @author Jhoan Carrero <jhoacar@captivefire.net>
  *
  * @api
  */
-class Context
+class Context extends UciGraphQLContext
 {
     /**
      * @var \Symfony\Component\HttpFoundation\Request
