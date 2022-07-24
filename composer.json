@@ -24,6 +24,7 @@
         "ext-xsl": "*",
         "friendsofphp/php-cs-fixer": "^3.9|^3.4",
         "humbug/box": "^4.0",
+        "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9.0"
     },
     "config": {
@@ -53,8 +54,10 @@
         "post-install-cmd": [],
         "post-update-cmd": "git config core.hooksPath .githooks",
         "test": "phpunit tests",
-        "sniff": "php-cs-fixer fix -vvv --dry-run --show-progress=dots",
-        "lint": "php-cs-fixer fix -vvv --show-progress=dots",
+        "sniff": "php-cs-fixer fix --dry-run",
+        "lint": "php-cs-fixer fix",
+        "analyse": "phpstan analyse -c phpstan.neon",
+        "check": "composer lint && composer analyse",
         "phpdox": "phpdox",
         "box": "box"
     },

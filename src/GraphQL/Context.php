@@ -15,8 +15,6 @@ use UciGraphQL\Context as UciGraphQLContext;
  * Context represents all the information inside each resolver for GraphQL.
  *
  * @author Jhoan Carrero <jhoacar@captivefire.net>
- *
- * @api
  */
 class Context extends UciGraphQLContext
 {
@@ -27,9 +25,6 @@ class Context extends UciGraphQLContext
 
     /**
      * Constructor.
-     * @param void
-     *
-     * @api
      */
     public function __construct()
     {

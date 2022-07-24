@@ -30,11 +30,10 @@ class Response extends BaseReponse
     public $graphql_method = Request::METHOD_POST;
 
     /**
-     * @param Symfony\Component\HttpFoundation\Request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param array $config
-     * @throws \InvalidArgumentException When the HTTP status code is not valid
      */
-    public function __construct(Request $request, array $config)
+    public function __construct($request, $config)
     {
         parent::__construct();
         $this->request = $request;
@@ -44,7 +43,6 @@ class Response extends BaseReponse
     }
 
     /**
-     * @param void
      * @return bool
      */
     public function isGraphQLRequest(): bool
@@ -54,7 +52,6 @@ class Response extends BaseReponse
     }
 
     /**
-     * @param void
      * @return string
      */
     public function getBaseUrlGraphQl(): string
@@ -66,12 +63,11 @@ class Response extends BaseReponse
 
     /**
      * Return default 404 error response.
-     * @param void
      * @return string
      */
     public function getNotFound(): string
     {
-        return json_encode([
+        return (string) json_encode([
             'error' => 'Not found in server',
         ]);
     }
@@ -90,7 +86,7 @@ class Response extends BaseReponse
                 $this->setStatusCode(404)->setContent($this->getNotFound());
             }
         } catch (\Throwable $error) {
-            $this->setContent(json_encode(['error' => $error->getMessage()]));
+            $this->setContent((string) json_encode(['error' => $error->getMessage()]));
         } finally {
             $this->setJsonHeaders();
             $this->setCorsHeaders();
@@ -101,7 +97,6 @@ class Response extends BaseReponse
 
     /**
      * Load Json Response.
-     * @param void
      * @return void
      */
     private function setJsonHeaders()
@@ -112,7 +107,6 @@ class Response extends BaseReponse
 
     /**
      * Load the CORS policy.
-     * @param void
      * @return void
      */
     private function setCorsHeaders()
@@ -146,6 +140,6 @@ class Response extends BaseReponse
         );
         $output = $result->toArray();
 
-        return json_encode($output);
+        return (string) json_encode($output);
     }
 }

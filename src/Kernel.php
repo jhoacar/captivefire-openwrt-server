@@ -26,7 +26,11 @@ class Kernel
         'uri' => 'graphql',
     ];
 
-    public function __construct(array $config)
+    /**
+     * Constructor with configuration.
+     * @param array $config
+     */
+    public function __construct($config)
     {
         foreach ($config as $key => $value) {
             $this->$key = $value;
@@ -36,7 +40,6 @@ class Kernel
     /**
      * This function load all the GraphQL response logic and send the response
      * If an error ocurred is catched and the response is used with 500 status code.
-     * @param void
      * @return Response
      */
     public function handle()
@@ -57,10 +60,10 @@ class Kernel
                 'line' => $throwable->getLine(),
                 'trace' => $throwable->getTraceAsString(),
             ];
-            $response = new Response(json_encode($error), 500, ['Content-Type' => 'application/json']);
-
-            return $response->send();
+            $response = new Response((string) json_encode($error), 500, ['Content-Type' => 'application/json']);
         }
+
+        return $response->send();
     }
 
     /**
@@ -68,7 +71,8 @@ class Kernel
      * This file contains all services to restart
      * In background there is a job processing this file
      * and restarting all these services.
-     * @param array
+     * @param array $services
+     * @return void
      */
     private function loadServicesToFile($services): void
     {
@@ -77,8 +81,11 @@ class Kernel
             $servicesContent .= str_replace('\'', '', $service) . PHP_EOL;
         }
         $servicesFile = realpath(__DIR__ . '/../services');
-        $fp = fopen($servicesFile, 'a'); //opens file in append mode
-        fwrite($fp, $servicesContent);
-        fclose($fp);
+        $fp = fopen((string) $servicesFile, 'a'); //opens file in append mode
+
+        if ($fp !== false) {
+            fwrite($fp, $servicesContent);
+            fclose($fp);
+        }
     }
 }
