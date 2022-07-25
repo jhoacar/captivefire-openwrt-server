@@ -5,10 +5,9 @@
  *
  * @author  Jhoan Carrero <jhoacar@captivefire.net>
  */
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 use App\Kernel;
-
-require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 define('CAPTIVEFIRE_START', microtime(true));
 

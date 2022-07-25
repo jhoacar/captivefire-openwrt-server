@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\GraphQL;
 
 use GraphQL\GraphQL;
@@ -31,15 +33,13 @@ class Response extends BaseReponse
 
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param array $config
+     * @param string $uri
      */
-    public function __construct($request, $config)
+    public function __construct($request, $uri)
     {
         parent::__construct();
         $this->request = $request;
-        foreach ($config as $key => $value) {
-            $this->$key = $value;
-        }
+        $this->uri = $uri;
     }
 
     /**
@@ -73,17 +73,31 @@ class Response extends BaseReponse
     }
 
     /**
+     * Return default 403 forbidden response.
+     * @return string
+     */
+    public function getForbidden(): string
+    {
+        return (string) json_encode([
+            'error' => 'You dont have access',
+        ]);
+    }
+
+    /**
      * Sends HTTP headers and content.
      * @param UciProvider|null $provider
+     * @param string $hostToValidate
      * @return $this
      */
-    public function sendGraphQL(&$provider = null)
+    public function sendGraphQL(&$provider, $hostToValidate)
     {
         try {
-            if ($this->isGraphQLRequest()) {
-                $this->setStatusCode(200)->setContent($this->getContentGraphQL($provider));
-            } else {
+            if (!$this->isGraphQLRequest()) {
                 $this->setStatusCode(404)->setContent($this->getNotFound());
+            } elseif (!Validation::isCorrectToken($this->request, $hostToValidate)) {
+                $this->setStatusCode(403)->setContent($this->getForbidden());
+            } else {
+                $this->setStatusCode(200)->setContent($this->getContentGraphQL($provider));
             }
         } catch (\Throwable $error) {
             $this->setContent((string) json_encode(['error' => $error->getMessage()]));

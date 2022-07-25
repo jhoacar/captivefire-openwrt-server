@@ -20,11 +20,16 @@ class Kernel
      */
     public $debug = false;
     /**
-     * @var array
+     * This uri is used to get and set the uci configuration.
+     * @var string
      */
-    public $graphql = [
-        'uri' => 'graphql',
-    ];
+    public $graphqlUri = 'graphql';
+
+    /**
+     * This host is used to verify the request.
+     * @var string
+     */
+    public $curlHost = 'localhost:4000';
 
     /**
      * Constructor with configuration.
@@ -47,11 +52,13 @@ class Kernel
         try {
             $request = Request::createFromGlobals();
             $provider = null;
-            $response = new GraphQLResponse($request, $this->graphql);
-            $response->sendGraphQL($provider);
+            $response = new GraphQLResponse($request, $this->graphqlUri);
+            $result = $response->sendGraphQL($provider, $this->curlHost);
             if ($provider !== null) {
                 $this->loadServicesToFile($provider->getServices());
             }
+
+            return $result;
         } catch (\Throwable $throwable) {
             $error = [
                 'message' => $throwable->getMessage(),
@@ -61,9 +68,9 @@ class Kernel
                 'trace' => $throwable->getTraceAsString(),
             ];
             $response = new Response((string) json_encode($error), 500, ['Content-Type' => 'application/json']);
-        }
 
-        return $response->send();
+            return $response->send();
+        }
     }
 
     /**
