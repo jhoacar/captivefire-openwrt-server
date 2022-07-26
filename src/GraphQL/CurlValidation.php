@@ -47,17 +47,21 @@ class CurlValidation
             return false;
         }
 
-        $host = str_ends_with($host, '/') ? $host : $host . '/';
+        $host = str_ends_with($host, '/') ? substr_replace($host, '', -1) : $host;
 
         $endpoint = $host . self::ROUTE_VALIDATION;
-        $curlHandler = curl_init();
-        curl_setopt($curlHandler, CURLOPT_URL, $endpoint);
-        curl_setopt($curlHandler, self::ROUTE_METHOD, 1);
-        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, ["Authorization: Bearer $token"]);
-        curl_exec($curlHandler);
 
-        $status = curl_getinfo($curlHandler, CURLINFO_HTTP_CODE);
-        curl_close($curlHandler);
+        $status = 0;
+        $curlHandler = curl_init();
+        if ($curlHandler !== false) {
+            curl_setopt($curlHandler, CURLOPT_URL, $endpoint);
+            curl_setopt($curlHandler, self::ROUTE_METHOD, 1);
+            curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curlHandler, CURLOPT_HTTPHEADER, ["Authorization: Bearer $token"]);
+            curl_exec($curlHandler);
+            $status = curl_getinfo($curlHandler, CURLINFO_HTTP_CODE);
+            curl_close($curlHandler);
+        }
 
         return $status == self::ROUTE_STATUS_CODE;
     }

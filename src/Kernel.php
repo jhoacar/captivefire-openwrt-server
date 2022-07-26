@@ -29,7 +29,7 @@ class Kernel
      * This host is used to verify the request.
      * @var string
      */
-    public $curlHost = 'localhost:4000';
+    public $curlHost = 'http://localhost:4000';
 
     /**
      * Constructor with configuration.

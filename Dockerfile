@@ -10,7 +10,8 @@ RUN mkdir /var/lock && \
 # Install PHP Extensions ( Necessary )
 RUN opkg install \
     php8-mod-iconv \
-    php8-mod-mbstring
+    php8-mod-mbstring \
+    php8-mod-curl
 
 # We need a user with the same UID/GID as the host user
 # so when we execute CLI commands, all the host file's permissions and ownership remain intact.

@@ -45,6 +45,14 @@ class Response extends BaseReponse
     /**
      * @return bool
      */
+    public function isInfoRequest(): bool
+    {
+        return $this->request->getPathInfo() === '/info';
+    }
+
+    /**
+     * @return bool
+     */
     public function isGraphQLRequest(): bool
     {
         return $this->request->getMethod() == $this->graphql_method &&
@@ -91,6 +99,11 @@ class Response extends BaseReponse
      */
     public function sendGraphQL(&$provider, $hostToValidate)
     {
+        if ($this->isInfoRequest()) {
+            phpinfo();
+
+            return parent::send();
+        }
         try {
             if (!$this->isGraphQLRequest()) {
                 $this->setStatusCode(404)->setContent($this->getNotFound());
