@@ -1,13 +1,3 @@
-/**/*.env
-/**/node_modules
-/vendor
-/**/composer.lock
-/**/.bash*
-/**/*.cert
-/**/*.crt
-/**/*.key
-/**/*lock*
-
-/.php-cs-fixer.cache
-/.phpunit.result.cache
-services
+*
+!.gitignore
+!captivefire
