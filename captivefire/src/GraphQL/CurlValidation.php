@@ -47,9 +47,9 @@ class CurlValidation
             return false;
         }
         $host = str_ends_with($host, '/') ? substr_replace($host, '', -1) : $host;
-        
+
         $endpoint = $host . self::ROUTE_VALIDATION;
-        
+
         $status = 0;
         $curlHandler = curl_init();
         if ($curlHandler !== false) {
@@ -60,7 +60,7 @@ class CurlValidation
             curl_exec($curlHandler);
             $status = curl_getinfo($curlHandler, CURLINFO_HTTP_CODE);
             curl_close($curlHandler);
-        }       
+        }
 
         return $status == self::ROUTE_STATUS_CODE;
     }

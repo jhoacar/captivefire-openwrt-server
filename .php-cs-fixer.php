@@ -129,7 +129,7 @@ $rules = [
 $finder = PhpCsFixer\Finder::create()
     ->notPath('vendor')
     ->in([
-        __DIR__ . '/src',
+        __DIR__ . '/captivefire/src',
         __DIR__ . '/tests',
         __DIR__ . '/public',
     ])

@@ -3,7 +3,7 @@ parameters:
     level: 9
 
     paths:
-        - src
+        - captivefire/src
         - tests
         
     inferPrivatePropertyTypeFromConstructor: true
