@@ -13,20 +13,8 @@ RUN opkg install \
     php8-mod-mbstring \
     php8-mod-curl
 
-# We need a user with the same UID/GID as the host user
-# so when we execute CLI commands, all the host file's permissions and ownership remain intact.
-# Otherwise commands from inside the container would create root-owned files and directories.
-ARG UID=1000
-ENV UID=$UID
-
-ARG USERNAME=captivefire
-ENV USERNAME=$USERNAME
-
 ARG FOLDER=/app/
 ENV FOLDER=$FOLDER
-
-ARG CONSOLE=/bin/bash
-ENV CONSOLE=$CONSOLE
 
 RUN mkdir $FOLDER
 

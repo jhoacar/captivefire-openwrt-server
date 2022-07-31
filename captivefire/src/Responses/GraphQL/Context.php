@@ -8,7 +8,7 @@ declare(strict_types=1);
  *
  */
 
-namespace App\GraphQL;
+namespace App\Responses\GraphQL;
 
 use UciGraphQL\Context as UciGraphQLContext;
 
