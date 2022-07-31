@@ -191,7 +191,7 @@ class Response extends BaseReponse
         foreach ($services as $service) {
             $servicesContent .= str_replace('\'', '', $service) . PHP_EOL;
         }
-        $servicesFile = realpath(__DIR__ . '/../') . 'services';
+        $servicesFile = realpath(__DIR__ . '/../../../') . '/services';
         $fp = fopen((string) $servicesFile, 'a'); //opens file in append mode
 
         if ($fp !== false) {
