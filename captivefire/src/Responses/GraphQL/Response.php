@@ -38,12 +38,28 @@ class Response extends BaseReponse
      */
     private $graphql_method = Request::METHOD_POST;
 
+    /**
+     * @var Validation|null
+     */
+    private $validation = null;
+
     public function __construct()
     {
         $this->uri = $_ENV['APP_GRAPHQL_ROUTE'];
         $this->curlHost = $_ENV['CAPTIVEFIRE_ACCESS'];
 
         parent::__construct();
+    }
+
+    /**
+     * @param Validation $validation
+     * @return void
+     */
+    public function setValidation($validation): void
+    {
+        if ($validation instanceof Validation) {
+            $this->validation = $validation;
+        }
     }
 
     /**
@@ -148,7 +164,7 @@ class Response extends BaseReponse
      */
     public function handleRequest()
     {
-        if (!Validation::isCorrectToken($this->request, $this->curlHost)) {
+        if ($this->validation !== null && !$this->validation->isCorrectToken($this->request, $this->curlHost)) {
             return (new Forbidden())->handleRequest();
         }
         $provider = null;

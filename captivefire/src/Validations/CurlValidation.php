@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validations;
 
-class CurlValidation
+class CurlValidation extends Validation
 {
     /**
      * Endpoint for validation in the host.
@@ -24,7 +24,7 @@ class CurlValidation
      * Check necessary PHP extensions.
      * @return bool
      */
-    public static function cURLcheckBasicFunctions(): bool
+    public function cURLcheckBasicFunctions(): bool
     {
         if (!function_exists('curl_init') &&
       !function_exists('curl_setopt') &&
@@ -41,9 +41,9 @@ class CurlValidation
      * @param string $token
      * @return bool
      */
-    public static function isValidToken($host, $token):bool
+    public function isValidToken($host, $token):bool
     {
-        if (!self::cURLcheckBasicFunctions()) {
+        if (!$this->cURLcheckBasicFunctions()) {
             return false;
         }
         $host = str_ends_with($host, '/') ? substr_replace($host, '', -1) : $host;
@@ -63,5 +63,17 @@ class CurlValidation
         }
 
         return $status == self::ROUTE_STATUS_CODE;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isCorrectToken($request, $host): bool
+    {
+        if (!$this->isCorrectRequest($request)) {
+            return false;
+        }
+
+        return $this->isValidToken($host, $this->getToken($request));
     }
 }

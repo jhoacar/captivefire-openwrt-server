@@ -6,13 +6,13 @@ namespace App\Validations;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class Validation
+abstract class Validation
 {
     /**
      * @param Request $request
      * @return string
      */
-    public static function getAuthorizationHeader($request): string
+    public function getAuthorizationHeader($request): string
     {
         return (string) $request->headers->get('Authorization', '');
     }
@@ -23,10 +23,10 @@ class Validation
      * @param Request $request
      * @return bool
      */
-    public static function isCorrectRequest($request): bool
+    public function isCorrectRequest($request): bool
     {
-        return strlen(self::getAuthorizationHeader($request)) > 0 &&
-                str_contains(self::getAuthorizationHeader($request), 'Bearer');
+        return strlen($this->getAuthorizationHeader($request)) > 0 &&
+                str_contains($this->getAuthorizationHeader($request), 'Bearer');
     }
 
     /**
@@ -35,12 +35,12 @@ class Validation
      * @param Request $request
      * @return string
      */
-    public static function getToken($request): string
+    public function getToken($request): string
     {
-        if (!self::isCorrectRequest($request)) {
+        if (!$this->isCorrectRequest($request)) {
             return '';
         }
-        $content = explode(' ', self::getAuthorizationHeader($request));
+        $content = explode(' ', $this->getAuthorizationHeader($request));
 
         return count($content) === 2 ? $content[1] : '';
     }
@@ -51,12 +51,5 @@ class Validation
      * @param string $host
      * @return bool
      */
-    public static function isCorrectToken($request, $host): bool
-    {
-        if (!self::isCorrectRequest($request)) {
-            return false;
-        }
-
-        return CurlValidation::isValidToken($host, self::getToken($request));
-    }
+    abstract public function isCorrectToken($request, $host): bool;
 }
