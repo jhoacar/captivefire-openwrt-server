@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Responses\HasConstructor;
 use App\Responses\NotFound;
 use App\Responses\Response;
 use App\Responses\ServerError;
@@ -41,7 +40,7 @@ class Kernel
                 'trace' => $throwable->getTraceAsString(),
             ];
 
-            return (new ServerError((string) json_encode($error)))->handleRequest();
+            return (new ServerError())->handleRequest((string) json_encode($error));
         }
     }
 
@@ -52,15 +51,11 @@ class Kernel
     private function isCorrectClass($class): bool
     {
         $parents = class_parents($class);
-        $implements = class_implements($class);
         if (!$parents) {
             $parents = [];
         }
-        if (!$implements) {
-            $implements = [];
-        }
 
-        return in_array(Response::class, $parents, true) && !in_array(HasConstructor::class, $implements, true);
+        return in_array(Response::class, $parents, true);
     }
 
     /**

@@ -2,17 +2,10 @@
 
 namespace App\Responses;
 
-class ServerError extends Response implements HasConstructor
-{
-    /**
-     * @param string $content
-     */
-    public function __construct($content)
-    {
-        $headers = $this->getHeaders();
-        parent::__construct($content, 500, $headers);
-    }
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
+class ServerError extends Response
+{
     /**
      * @inheritdoc
      */
@@ -22,10 +15,15 @@ class ServerError extends Response implements HasConstructor
     }
 
     /**
+     * @param string $content
      * @inheritdoc
      */
-    public function handleRequest()
+    public function handleRequest($content = '')
     {
+        $this->headers = new ResponseHeaderBag($this->getHeaders());
+
+        $this->setStatusCode(500)->setContent($content);
+
         return $this->send();
     }
 }

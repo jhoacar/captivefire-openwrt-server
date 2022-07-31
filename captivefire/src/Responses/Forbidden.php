@@ -2,18 +2,10 @@
 
 namespace App\Responses;
 
-class Forbidden extends Response implements HasConstructor
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
+class Forbidden extends Response
 {
-    public function __construct()
-    {
-        $headers = $this->getHeaders();
-        $content = (string) json_encode([
-            'error' => 'You dont have access',
-        ]);
-
-        parent::__construct($content, 403, $headers);
-    }
-
     /**
      * @inheritdoc
      */
@@ -27,6 +19,12 @@ class Forbidden extends Response implements HasConstructor
      */
     public function handleRequest()
     {
+        $this->headers = new ResponseHeaderBag($this->getHeaders());
+        $content = (string) json_encode([
+            'error' => 'You dont have access',
+        ]);
+        $this->setStatusCode(403)->setContent($content);
+
         return $this->send();
     }
 }

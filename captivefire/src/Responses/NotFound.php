@@ -2,18 +2,10 @@
 
 namespace App\Responses;
 
-class NotFound extends Response implements HasConstructor
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
+class NotFound extends Response
 {
-    public function __construct()
-    {
-        $headers = $this->getHeaders();
-        $content = (string) json_encode([
-            'error' => 'Not found',
-        ]);
-
-        parent::__construct($content, 404, $headers);
-    }
-
     /**
      * @inheritdoc
      */
@@ -27,6 +19,13 @@ class NotFound extends Response implements HasConstructor
      */
     public function handleRequest()
     {
+        $content = (string) json_encode([
+            'error' => 'Not found',
+        ]);
+        $this->headers = new ResponseHeaderBag($this->getHeaders());
+
+        $this->setStatusCode(404)->setContent($content);
+
         return $this->send();
     }
 }
