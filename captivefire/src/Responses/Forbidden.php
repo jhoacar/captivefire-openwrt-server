@@ -2,8 +2,6 @@
 
 namespace App\Responses;
 
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-
 class Forbidden extends Response
 {
     /**
@@ -19,12 +17,10 @@ class Forbidden extends Response
      */
     public function handleRequest()
     {
-        $this->headers = new ResponseHeaderBag($this->getHeaders());
         $content = (string) json_encode([
             'error' => 'You dont have access',
         ]);
-        $this->setStatusCode(403)->setContent($content);
 
-        return $this->send();
+        return $this->setHeaders()->setStatusCode(403)->setContent($content)->send();
     }
 }

@@ -8,7 +8,7 @@ services:
       args: 
         FOLDER: /app/
     image: captivefire:openwrt-2.0
-    # Using these directives we need to run 'docker-compose --compatibility up -d'
+    # Using these directives for 'deploy' we need to run 'docker-compose --compatibility up -d'
     deploy:
       resources:
         limits:
@@ -21,9 +21,9 @@ services:
     # command: /app/docker/start-container.sh 
     restart: always
     ports:
-      - '${APP_HTTP_PORT:-80}:80'
-      - 443:443 # HTTPS Port
-      - 8080:8080
+      - '${APP_HTTP_PORT:-8000}:80' # HTTP Captivefire
+      - '${APP_HTTPS_PORT:-443}:${APP_HTTPS_PORT:-443}' # HTTPS Captivefire
+      - '${LUCI_HTTPS_PORT:-8443}:${LUCI_HTTPS_PORT:-8443}' # Luci App
     volumes:
       - ./docker/etc/config:/etc/config
       - ./docker/etc/crontabs:/etc/crontabs

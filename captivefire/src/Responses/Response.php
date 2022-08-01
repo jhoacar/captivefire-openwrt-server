@@ -22,17 +22,36 @@ abstract class Response extends BaseResponse
     }
 
     /**
-     * Headers for cache control, json response and cors.
-     * @return array
+     * Load Json Response.
+     * @return void
      */
-    public function getHeaders(): array
+    private function setJsonHeaders(): void
     {
-        return [
-            'Cache-Control' => 'no-cache',
-            'Content-Type' => 'application/json',
-            'Access-Control-Allow-Origin' => '*',
-            'Access-Control-Allow-Methods' => '*',
-        ];
+        $this->headers->set('Cache-Control', 'no-cache');
+        $this->headers->set('Content-Type', 'application/json');
+    }
+
+    /**
+     * Load the CORS policy.
+     * @return void
+     */
+    private function setCorsHeaders(): void
+    {
+        /* CORS Policy */
+        $this->headers->set('Access-Control-Allow-Origin', '*');
+        $this->headers->set('Access-Control-Allow-Methods', '*');
+    }
+
+    /**
+     * Headers for cache control, json response and cors.
+     * @return $this
+     */
+    public function setHeaders()
+    {
+        $this->setJsonHeaders();
+        $this->setCorsHeaders();
+
+        return $this;
     }
 
     /**

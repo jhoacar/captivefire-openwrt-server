@@ -2,8 +2,6 @@
 
 namespace App\Responses;
 
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-
 class NotFound extends Response
 {
     /**
@@ -22,10 +20,7 @@ class NotFound extends Response
         $content = (string) json_encode([
             'error' => 'Not found',
         ]);
-        $this->headers = new ResponseHeaderBag($this->getHeaders());
 
-        $this->setStatusCode(404)->setContent($content);
-
-        return $this->send();
+        return $this->setHeaders()->setStatusCode(404)->setContent($content)->send();
     }
 }

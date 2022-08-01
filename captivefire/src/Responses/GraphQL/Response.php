@@ -94,32 +94,10 @@ class Response extends BaseReponse
         } catch (\Throwable $error) {
             $this->setStatusCode(500)->setContent((string) json_encode(['error' => $error->getMessage()]));
         } finally {
-            $this->setJsonHeaders();
-            $this->setCorsHeaders();
+            $this->setHeaders();
 
             return parent::send();
         }
-    }
-
-    /**
-     * Load Json Response.
-     * @return void
-     */
-    private function setJsonHeaders(): void
-    {
-        $this->headers->set('Cache-Control', 'no-cache');
-        $this->headers->set('Content-Type', 'application/json');
-    }
-
-    /**
-     * Load the CORS policy.
-     * @return void
-     */
-    private function setCorsHeaders(): void
-    {
-        /* CORS Policy */
-        $this->headers->set('Access-Control-Allow-Origin', '*');
-        $this->headers->set('Access-Control-Allow-Methods', '*');
     }
 
     /**

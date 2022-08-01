@@ -2,8 +2,6 @@
 
 namespace App\Responses;
 
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-
 class ServerError extends Response
 {
     /**
@@ -20,10 +18,6 @@ class ServerError extends Response
      */
     public function handleRequest($content = '')
     {
-        $this->headers = new ResponseHeaderBag($this->getHeaders());
-
-        $this->setStatusCode(500)->setContent($content);
-
-        return $this->send();
+        return $this->setHeaders()->setStatusCode(500)->setContent($content)->send();
     }
 }

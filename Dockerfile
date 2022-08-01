@@ -5,13 +5,15 @@ RUN mkdir /var/lock && \
     opkg update && opkg install \
     uhttpd \
     php8 \
-    php8-cgi
+    php8-cgi \
+    luci
 
 # Install PHP Extensions ( Necessary )
 RUN opkg install \
     php8-mod-iconv \
     php8-mod-mbstring \
-    php8-mod-curl
+    php8-mod-curl \
+    php8-mod-zip
 
 ARG FOLDER=/app/
 ENV FOLDER=$FOLDER

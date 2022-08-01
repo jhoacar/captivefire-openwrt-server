@@ -24,7 +24,7 @@ class Info extends Response
      */
     public function handleRequest()
     {
-        phpinfo();
+        phpinfo(INFO_ALL ^ INFO_VARIABLES);
 
         return null;
     }
