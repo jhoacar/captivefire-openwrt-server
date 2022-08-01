@@ -31,22 +31,11 @@ class Response extends BaseReponse
     /**
      * @var string
      */
-    private $curlHost;
-
-    /**
-     * @var string
-     */
     private $graphql_method = Request::METHOD_POST;
-
-    /**
-     * @var Validation|null
-     */
-    private $validation = null;
 
     public function __construct()
     {
         $this->uri = $_ENV['APP_GRAPHQL_ROUTE'];
-        $this->curlHost = $_ENV['CAPTIVEFIRE_ACCESS'];
 
         parent::__construct();
     }
@@ -89,15 +78,10 @@ class Response extends BaseReponse
      */
     private function sendGraphQL(&$provider)
     {
-        try {
-            $this->setStatusCode(200)->setContent($this->getContentGraphQL($provider));
-        } catch (\Throwable $error) {
-            $this->setStatusCode(500)->setContent((string) json_encode(['error' => $error->getMessage()]));
-        } finally {
-            $this->setHeaders();
-
-            return parent::send();
-        }
+        return $this->setHeaders()
+                ->setStatusCode(200)
+                ->setContent($this->getContentGraphQL($provider))
+                ->send();
     }
 
     /**
@@ -132,9 +116,7 @@ class Response extends BaseReponse
      */
     public function matchRequest($request): bool
     {
-        $this->request = $request;
-
-        return $this->isGraphQLRequest($request);
+        return $this->isGraphQLRequest($this->request = $request);
     }
 
     /**
@@ -142,7 +124,7 @@ class Response extends BaseReponse
      */
     public function handleRequest()
     {
-        if ($this->validation !== null && !$this->validation->isCorrectToken($this->request, $this->curlHost)) {
+        if (!$this->isValidatedRequest()) {
             return (new Forbidden())->handleRequest();
         }
         $provider = null;

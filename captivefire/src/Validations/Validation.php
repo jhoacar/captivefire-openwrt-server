@@ -20,24 +20,28 @@ abstract class Validation
     /**
      * Return if a request a Authorization header
      *     Authorization: Bearer <token>.
-     * @param Request $request
+     * @param Request|null $request
      * @return bool
      */
     public function isCorrectRequest($request): bool
     {
+        if ($request === null) {
+            return false;
+        }
+
         return strlen($this->getAuthorizationHeader($request)) > 0 &&
-                str_contains($this->getAuthorizationHeader($request), 'Bearer');
+            str_contains($this->getAuthorizationHeader($request), 'Bearer');
     }
 
     /**
      * Return the token contained in the Authorization header
      *     Authorization: Bearer <token>.
-     * @param Request $request
+     * @param Request|null $request
      * @return string
      */
     public function getToken($request): string
     {
-        if (!$this->isCorrectRequest($request)) {
+        if ($request === null || !$this->isCorrectRequest($request)) {
             return '';
         }
         $content = explode(' ', $this->getAuthorizationHeader($request));
@@ -46,10 +50,9 @@ abstract class Validation
     }
 
     /**
-     * Return true if the token extracted from the header request is correct in the host.
-     * @param Request $request
-     * @param string $host
+     * Return true if the token extracted from the header request is correct.
+     * @param Request|null $request
      * @return bool
      */
-    abstract public function isCorrectToken($request, $host): bool;
+    abstract public function isValidatedRequest($request): bool;
 }

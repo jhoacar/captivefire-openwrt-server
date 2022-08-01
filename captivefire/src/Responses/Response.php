@@ -2,6 +2,7 @@
 
 namespace App\Responses;
 
+use App\Validations\Validation;
 use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 abstract class Response extends BaseResponse
@@ -10,6 +11,11 @@ abstract class Response extends BaseResponse
      * @var \Symfony\Component\HttpFoundation\Request|null
      */
     protected $request = null;
+
+    /**
+     * @var Validation|null
+     */
+    protected $validation = null;
 
     /**
      * @param string|null $content
@@ -52,6 +58,15 @@ abstract class Response extends BaseResponse
         $this->setCorsHeaders();
 
         return $this;
+    }
+
+    /**
+     * Manage validation with the abstract class validation.
+     * @return bool
+     */
+    public function isValidatedRequest()
+    {
+        return $this->validation !== null && !$this->validation->isValidatedRequest($this->request);
     }
 
     /**

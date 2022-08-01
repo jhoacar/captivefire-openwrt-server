@@ -11,12 +11,8 @@ class Info extends Response
      */
     public function matchRequest($request): bool
     {
-        if ($this->request === null) {
-            $this->request = $request;
-        }
-
-        return $this->request->getMethod() === Request::METHOD_GET &&
-                $this->request->getPathInfo() === '/info';
+        return $request->getMethod() === Request::METHOD_GET &&
+                $request->getPathInfo() === '/info';
     }
 
     /**

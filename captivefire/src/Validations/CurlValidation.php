@@ -68,11 +68,13 @@ class CurlValidation extends Validation
     /**
      * @inheritdoc
      */
-    public function isCorrectToken($request, $host): bool
+    public function isValidatedRequest($request): bool
     {
         if (!$this->isCorrectRequest($request)) {
             return false;
         }
+
+        $host = $_ENV['CAPTIVEFIRE_ACCESS'];
 
         return $this->isValidToken($host, $this->getToken($request));
     }
