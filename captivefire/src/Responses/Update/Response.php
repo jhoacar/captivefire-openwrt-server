@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Responses;
+namespace App\Responses\Update;
 
+use App\Responses\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class Update extends Response
+class Response extends BaseResponse
 {
     /**
      * @param Request $request
@@ -29,10 +30,14 @@ class Update extends Response
      */
     public function handleRequest()
     {
-        if (!$this->isValidatedRequest()) {
-            return (new Forbidden())->handleRequest();
-        }
+        // if (!$this->isValidatedRequest()) {
+        //     return (new Forbidden())->handleRequest();
+        // }
 
-        return null;
+        $content = (string) json_encode([
+            'updated' => 'yes',
+        ]);
+
+        return $this->setStatusCode(200)->setContent($content)->send();
     }
 }
