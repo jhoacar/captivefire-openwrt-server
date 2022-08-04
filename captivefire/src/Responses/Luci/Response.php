@@ -4,7 +4,6 @@ namespace App\Responses\Luci;
 
 use App\Responses\Response as BaseResponse;
 use Symfony\Component\HttpFoundation\Request;
-use UciGraphQL\Utils\Command;
 
 class Response extends BaseResponse
 {
@@ -18,16 +17,15 @@ class Response extends BaseResponse
     }
 
     /**
-     * @param
+     * @return $this
      */
     private function redirectToLuciApp()
     {
-        // Command::execute('passwd << EOF
-        // Hola
-        // Hola
-        // EOF');
-        $this->headers->set('Location', $this->request->getSchemeAndHttpHost() . ':8443');
-        $this->setStatusCode(302)->send();
+        if ($this->request !== null) {
+            $this->headers->set('Location', $this->request->getSchemeAndHttpHost() . ':8443');
+        }
+
+        return $this->setStatusCode(302)->send();
     }
 
     /**
@@ -47,7 +45,7 @@ class Response extends BaseResponse
         //     return (new Forbidden())->handleRequest();
         // }
 
-        if ($this->request->getMethod() === Request::METHOD_GET) {
+        if ($this->request !== null && $this->request->getMethod() === Request::METHOD_GET) {
             return $this->redirectToLuciApp();
         }
 
