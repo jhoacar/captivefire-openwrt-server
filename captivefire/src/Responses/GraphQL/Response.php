@@ -36,8 +36,7 @@ class Response extends BaseReponse
 
     public function __construct()
     {
-        $this->uri = $_ENV['APP_GRAPHQL_ROUTE'];
-
+        $this->uri = (string) getenv('APP_GRAPHQL_ROUTE');
         parent::__construct();
     }
 

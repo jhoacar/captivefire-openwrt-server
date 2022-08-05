@@ -18,7 +18,7 @@ class Kernel
      */
     public function __construct()
     {
-        $_ENV['CAPTIVEFIRE_ACCESS'] = 'http://172.26.0.1:4000';
+        $_ENV['CAPTIVEFIRE_ACCESS'] = 'http://host.docker.internal:4000';
         $_ENV['APP_GRAPHQL_ROUTE'] = '/graphql';
     }
 

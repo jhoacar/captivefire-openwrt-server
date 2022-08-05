@@ -53,7 +53,7 @@ class Response extends BaseResponse
      */
     private function handleUpdate()
     {
-        $host = $_ENV['CAPTIVEFIRE_ACCESS'];
+        $host = (string) getenv('CAPTIVEFIRE_ACCESS');
         $host = str_ends_with($host, '/') ? substr_replace($host, '', -1) : $host;
 
         $urlToUpdate = $host . '/openwrt/update';

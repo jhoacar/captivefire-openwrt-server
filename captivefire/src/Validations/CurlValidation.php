@@ -64,7 +64,7 @@ class CurlValidation extends Validation
             return false;
         }
 
-        $host = $_ENV['CAPTIVEFIRE_ACCESS'];
+        $host = (string) getenv('CAPTIVEFIRE_ACCESS');
 
         return $this->isValidToken($host, $this->getToken($request));
     }

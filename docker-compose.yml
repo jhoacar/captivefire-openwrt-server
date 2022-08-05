@@ -30,3 +30,5 @@ services:
       - ./docker/etc/crontabs:/etc/crontabs
       - ./docker/etc/php.ini:/etc/php.ini
       - .:/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
