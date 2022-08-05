@@ -18,6 +18,7 @@ class Kernel
      */
     public function __construct()
     {
+        $_ENV['PATH_SERVICES'] = '/app/services';
         $_ENV['CAPTIVEFIRE_ACCESS'] = 'http://host.docker.internal:4000';
         $_ENV['APP_GRAPHQL_ROUTE'] = '/graphql';
     }
@@ -90,7 +91,8 @@ class Kernel
         $request = Request::createFromGlobals();
 
         $classes = ClassFinder::getClassesInNamespace(__DIR__ . '/../', 'App\\Responses');
-
+        var_dump($classes);
+        die;
         foreach ($classes as $class) {
             if ($this->isCorrectClass($class)) {
                 $handler = new $class();

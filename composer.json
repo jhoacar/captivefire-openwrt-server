@@ -15,6 +15,9 @@
         "php": "^7.3|^8.1",
         "ext-iconv": "*",
         "ext-mbstring": "*",
+        "ext-curl": "*",
+        "ext-zip": "*",
+        "ext-phar":"*",
         "jhoacar/uci-graphql-php": "^1.1",
         "symfony/http-foundation": "^6.1|^5.4"
     },

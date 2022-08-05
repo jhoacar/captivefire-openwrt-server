@@ -1,5 +1,5 @@
 {
-    "main": "build/public/index.php",
+    "main": "build/captivefire/index.php",
     "output": "build/index.phar",
     "directories": [
         "build/captivefire"

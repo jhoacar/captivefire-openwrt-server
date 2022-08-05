@@ -124,7 +124,9 @@ class Response extends BaseReponse
      */
     public function handleRequest()
     {
-        $this->validation = new CurlValidation();
+        if ($this->validation === null) {
+            $this->validation = new CurlValidation();
+        }
 
         if (!$this->isValidatedRequest()) {
             return (new Forbidden())->handleRequest();
