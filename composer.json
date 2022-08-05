@@ -59,7 +59,8 @@
         "analyse": "phpstan analyse -c phpstan.neon",
         "check": "composer lint && composer analyse",
         "phpdox": "phpdox",
-        "box": "box"
+        "box": "box",
+        "build": "npm run build && box compile"
     },
     "conflict": {},
     "extra": {

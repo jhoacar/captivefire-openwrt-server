@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class UnionTypeExtensionNode extends Node implements TypeExtensionNode{public $kind=NodeKind::UNION_TYPE_EXTENSION;public $name;public $directives;public $types;}

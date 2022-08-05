@@ -1,0 +1,1 @@
+<?php  namespace App\Responses;class Forbidden extends Response{public function matchRequest($request):bool{return false;}public function handleRequest(){$content=(string) json_encode(['error' =>'You dont have access',]);return $this->setHeaders()->setStatusCode(403)->setContent($content)->send();}}

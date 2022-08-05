@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Error;interface ClientAware{public function isClientSafe();public function getCategory();}

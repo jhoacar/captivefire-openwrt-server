@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class FragmentDefinitionNode extends Node implements ExecutableDefinitionNode,HasSelectionSet{public $kind=NodeKind::FRAGMENT_DEFINITION;public $name;public $variableDefinitions;public $typeCondition;public $directives;public $selectionSet;}

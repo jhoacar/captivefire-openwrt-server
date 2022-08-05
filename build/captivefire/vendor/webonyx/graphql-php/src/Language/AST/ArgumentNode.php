@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class ArgumentNode extends Node{public $kind=NodeKind::ARGUMENT;public $value;public $name;}

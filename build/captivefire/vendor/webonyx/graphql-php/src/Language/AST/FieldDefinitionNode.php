@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class FieldDefinitionNode extends Node{public $kind=NodeKind::FIELD_DEFINITION;public $name;public $arguments;public $type;public $directives;public $description;}

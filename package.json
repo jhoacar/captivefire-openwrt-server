@@ -1,0 +1,26 @@
+{
+  "name": "captivefire-openwrt-server",
+  "version": "1.0.0",
+  "description": "<pre>    ___            _   _            __ _             / __\\__ _ _ __ | |_(_)_   _____ / _(_)_ __ ___   / /  / _` | '_ \\| __| \\ \\ / / _ \\ |_| | '__/ _ \\ / /__| (_| | |_) | |_| |\\ V /  __/  _| | | |  __/   Created by - Jhoan Carrero \\____/\\__,_| .__/ \\__|_| \\_/ \\___|_| |_|_|  \\___|  ( Ogre font in <a href=\"https://patorjk.com\">https://patorjk.com</a> )            |_|                                    </pre>",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "node uglify-php.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhoacar/captivefire-openwrt-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhoacar/captivefire-openwrt-server/issues"
+  },
+  "homepage": "https://github.com/jhoacar/captivefire-openwrt-server#readme",
+  "dependencies": {
+    "glob": "^8.0.3",
+    "uglify-php": "^1.0.7"
+  }
+}

@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class DirectiveDefinitionNode extends Node implements TypeSystemDefinitionNode{public $kind=NodeKind::DIRECTIVE_DEFINITION;public $name;public $arguments;public $locations;public $description;}

@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class ObjectTypeDefinitionNode extends Node implements TypeDefinitionNode{public $kind=NodeKind::OBJECT_TYPE_DEFINITION;public $name;public $interfaces=[];public $directives;public $fields;public $description;}

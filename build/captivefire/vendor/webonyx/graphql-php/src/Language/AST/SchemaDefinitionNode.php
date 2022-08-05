@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class SchemaDefinitionNode extends Node implements TypeSystemDefinitionNode{public $kind=NodeKind::SCHEMA_DEFINITION;public $directives;public $operationTypes;}

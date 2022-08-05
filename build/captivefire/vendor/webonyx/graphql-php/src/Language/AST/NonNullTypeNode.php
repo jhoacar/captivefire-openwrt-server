@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class NonNullTypeNode extends Node implements TypeNode{public $kind=NodeKind::NON_NULL_TYPE;public $type;}

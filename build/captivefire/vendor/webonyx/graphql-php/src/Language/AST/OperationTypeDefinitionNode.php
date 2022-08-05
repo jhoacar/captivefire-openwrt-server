@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class OperationTypeDefinitionNode extends Node{public $kind=NodeKind::OPERATION_TYPE_DEFINITION;public $operation;public $type;}

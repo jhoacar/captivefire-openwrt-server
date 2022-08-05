@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class InputValueDefinitionNode extends Node{public $kind=NodeKind::INPUT_VALUE_DEFINITION;public $name;public $type;public $defaultValue;public $directives;public $description;}

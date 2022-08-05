@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Type\Definition;interface AbstractType{public function resolveType($objectValue,$context,ResolveInfo $info);}

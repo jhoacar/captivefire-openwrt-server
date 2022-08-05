@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class ObjectFieldNode extends Node{public $kind=NodeKind::OBJECT_FIELD;public $name;public $value;}

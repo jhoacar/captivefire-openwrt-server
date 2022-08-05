@@ -1,0 +1,1 @@
+<?php  namespace App\Responses;class ServerError extends Response{public function matchRequest($request):bool{return false;}public function handleRequest($content=''){return $this->setHeaders()->setStatusCode(500)->setContent($content)->send();}}

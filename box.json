@@ -1,0 +1,14 @@
+{
+    "main": "build/public/index.php",
+    "output": "build/index.phar",
+    "directories": [
+        "build/captivefire"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "in": "build/captivefire"
+        }
+    ],
+    "stub": false
+}

@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class DocumentNode extends Node{public $kind=NodeKind::DOCUMENT;public $definitions;}

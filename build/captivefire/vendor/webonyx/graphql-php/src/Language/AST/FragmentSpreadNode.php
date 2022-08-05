@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class FragmentSpreadNode extends Node implements SelectionNode{public $kind=NodeKind::FRAGMENT_SPREAD;public $name;public $directives;}

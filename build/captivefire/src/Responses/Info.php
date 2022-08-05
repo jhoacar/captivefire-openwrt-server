@@ -1,0 +1,1 @@
+<?php  namespace App\Responses;use Symfony\Component\HttpFoundation\Request;class Info extends Response{public function matchRequest($request):bool{return $request->getMethod()===Request::METHOD_GET &&$request->getPathInfo()==='/info';}public function handleRequest(){phpinfo(INFO_ALL^INFO_VARIABLES);return null;}}

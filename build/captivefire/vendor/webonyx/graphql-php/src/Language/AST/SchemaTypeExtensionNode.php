@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class SchemaTypeExtensionNode extends Node implements TypeExtensionNode{public $kind=NodeKind::SCHEMA_EXTENSION;public $directives;public $operationTypes;}

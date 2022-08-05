@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace App\Responses\GraphQL;use UciGraphQL\Context as UciGraphQLContext;class Context extends UciGraphQLContext{public $request;public function __construct(){}}

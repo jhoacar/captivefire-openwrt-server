@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Error;use LogicException;class InvariantViolation extends LogicException{}

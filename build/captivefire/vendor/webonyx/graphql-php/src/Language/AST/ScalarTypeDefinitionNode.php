@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class ScalarTypeDefinitionNode extends Node implements TypeDefinitionNode{public $kind=NodeKind::SCALAR_TYPE_DEFINITION;public $name;public $directives;public $description;}

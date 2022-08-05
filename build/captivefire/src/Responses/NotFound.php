@@ -1,0 +1,1 @@
+<?php  namespace App\Responses;class NotFound extends Response{public function matchRequest($request):bool{return false;}public function handleRequest(){$content=(string) json_encode(['error' =>'Not found',]);return $this->setHeaders()->setStatusCode(404)->setContent($content)->send();}}

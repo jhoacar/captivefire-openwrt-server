@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Type\Definition;use Exception;use GraphQL\Error\Error;use GraphQL\Language\AST\Node;interface LeafType{public function serialize($value);public function parseValue($value);public function parseLiteral($valueNode,?array $variables=null);}

@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class EnumValueDefinitionNode extends Node{public $kind=NodeKind::ENUM_VALUE_DEFINITION;public $name;public $directives;public $description;}

@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class SelectionSetNode extends Node{public $kind=NodeKind::SELECTION_SET;public $selections;}

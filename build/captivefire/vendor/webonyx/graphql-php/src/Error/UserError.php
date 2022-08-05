@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Error;use RuntimeException;class UserError extends RuntimeException implements ClientAware{public function isClientSafe(){return true;}public function getCategory(){return 'user';}}

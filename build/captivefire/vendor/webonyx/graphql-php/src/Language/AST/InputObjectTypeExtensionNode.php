@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class InputObjectTypeExtensionNode extends Node implements TypeExtensionNode{public $kind=NodeKind::INPUT_OBJECT_TYPE_EXTENSION;public $name;public $directives;public $fields;}

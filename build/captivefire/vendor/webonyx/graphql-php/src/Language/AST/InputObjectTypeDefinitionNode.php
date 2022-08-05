@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class InputObjectTypeDefinitionNode extends Node implements TypeDefinitionNode{public $kind=NodeKind::INPUT_OBJECT_TYPE_DEFINITION;public $name;public $directives;public $fields;public $description;}

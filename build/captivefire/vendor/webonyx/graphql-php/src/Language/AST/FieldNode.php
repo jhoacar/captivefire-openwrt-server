@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Language\AST;class FieldNode extends Node implements SelectionNode{public $kind=NodeKind::FIELD;public $name;public $alias;public $arguments;public $directives;public $selectionSet;}

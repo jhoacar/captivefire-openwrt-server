@@ -1,0 +1,1 @@
+<?php  declare(strict_types=1);namespace GraphQL\Experimental\Executor;use Generator;class Strand{public $current;public $stack;public $depth;public $success;public $value;public function __construct(Generator $coroutine){$this->current=$coroutine;$this->stack=[];$this->depth=0;}}
