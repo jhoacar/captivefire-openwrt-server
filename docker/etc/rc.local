@@ -1,7 +1,17 @@
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 # If is a docker container, it takes about 1 minute
+#!/bin/sh
 
+function setPhpIniConfiguration()
+{
+    sed -i "s/$1 = .*/$1 = $2/" /etc/php.ini
+}
 
+function setPhpIniDocRoot(){
+    setPhpIniConfiguration "doc\_root" "\/app\/public"
+}
+
+setPhpIniDocRoot
 
 exit 0
