@@ -91,8 +91,6 @@ class Kernel
         $request = Request::createFromGlobals();
 
         $classes = ClassFinder::getClassesInNamespace(__DIR__ . '/../', 'App\\Responses');
-        var_dump($classes);
-        die;
         foreach ($classes as $class) {
             if ($this->isCorrectClass($class)) {
                 $handler = new $class();

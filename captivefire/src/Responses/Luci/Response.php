@@ -46,7 +46,7 @@ class Response extends BaseResponse
         if ($this->validation === null) {
             $this->validation = new CurlValidation();
         }
-       
+
         if (!$this->isValidatedRequest()) {
             return (new Forbidden())->handleRequest();
         }
