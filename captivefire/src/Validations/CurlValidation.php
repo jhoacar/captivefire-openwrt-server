@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Validations;
 
+use App\Utils\Curl;
+
 class CurlValidation extends Validation
 {
     /**
@@ -50,19 +52,7 @@ class CurlValidation extends Validation
 
         $endpoint = $host . self::ROUTE_VALIDATION;
 
-        $status = 0;
-        $curlHandler = curl_init();
-        if ($curlHandler !== false) {
-            curl_setopt($curlHandler, CURLOPT_URL, $endpoint);
-            curl_setopt($curlHandler, self::ROUTE_METHOD, 1);
-            curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curlHandler, CURLOPT_HTTPHEADER, ["Authorization: Bearer $token"]);
-            curl_exec($curlHandler);
-            $status = curl_getinfo($curlHandler, CURLINFO_HTTP_CODE);
-            curl_close($curlHandler);
-        }
-
-        return $status == self::ROUTE_STATUS_CODE;
+        return Curl::makeCurl($endpoint, self::ROUTE_METHOD, $token)->status === self::ROUTE_STATUS_CODE;
     }
 
     /**

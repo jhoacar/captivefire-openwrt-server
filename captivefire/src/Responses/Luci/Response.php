@@ -2,7 +2,9 @@
 
 namespace App\Responses\Luci;
 
+use App\Responses\Forbidden;
 use App\Responses\Response as BaseResponse;
+use App\Validations\CurlValidation;
 use Symfony\Component\HttpFoundation\Request;
 
 class Response extends BaseResponse
@@ -41,9 +43,11 @@ class Response extends BaseResponse
      */
     public function handleRequest()
     {
-        // if (!$this->isValidatedRequest()) {
-        //     return (new Forbidden())->handleRequest();
-        // }
+        $this->validation = new CurlValidation();
+
+        if (!$this->isValidatedRequest()) {
+            return (new Forbidden())->handleRequest();
+        }
 
         if ($this->request !== null && $this->request->getMethod() === Request::METHOD_GET) {
             return $this->redirectToLuciApp();

@@ -6,6 +6,7 @@ namespace App\Responses\GraphQL;
 
 use App\Responses\Forbidden;
 use App\Responses\Response as BaseReponse;
+use App\Validations\CurlValidation;
 use App\Validations\Validation;
 use GraphQL\GraphQL;
 use Symfony\Component\HttpFoundation\Request;
@@ -124,9 +125,12 @@ class Response extends BaseReponse
      */
     public function handleRequest()
     {
+        $this->validation = new CurlValidation();
+
         if (!$this->isValidatedRequest()) {
             return (new Forbidden())->handleRequest();
         }
+
         $provider = null;
         $result = $this->sendGraphQL($provider);
 

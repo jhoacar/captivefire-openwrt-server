@@ -66,7 +66,7 @@ abstract class Response extends BaseResponse
      */
     public function isValidatedRequest()
     {
-        return $this->validation !== null && !$this->validation->isValidatedRequest($this->request);
+        return $this->validation !== null && $this->validation->isValidatedRequest($this->request);
     }
 
     /**
