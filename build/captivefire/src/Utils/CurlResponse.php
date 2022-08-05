@@ -1,0 +1,1 @@
+<?php  namespace App\Utils;class CurlResponse{public $data='';public $status=0;public function __construct(){$this->data='';$this->status=0;}}

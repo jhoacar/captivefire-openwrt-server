@@ -1,3 +1,4 @@
+const { exec } = require("child_process");
 const fs = require("fs");
 const glob = require("glob");
 const UglifyPHP = require('uglify-php');
@@ -19,11 +20,17 @@ getDirectories(captivefireFolder, function (err, res) {
 
         const buildPath = captivefireBuild + path.substring(2);
 
-        if (fs.lstatSync(path).isDirectory() && !fs.existsSync(buildPath))
+        if (fs.lstatSync(path).isDirectory() && !fs.existsSync(buildPath)) {
             fs.mkdirSync(buildPath, { recursive: true });
+        }
 
-        if (!fs.lstatSync(path).isFile() || !path.includes('.php'))
+        if (path.includes('captivefire/composer.json')) {
+            exec(`cp ${path} ${buildPath}`);
+        }
+
+        if (!fs.lstatSync(path).isFile() || !path.includes('.php')) {
             return;
+        }
 
         const options = {
             "excludes": [
@@ -51,12 +58,12 @@ getDirectories(captivefireFolder, function (err, res) {
             }
         }
         UglifyPHP.minify(path, options)
-        .then(result=>{
-            fs.writeFile(buildPath, result, (err) => {
-                if (err) console.log(buildPath,err);
-            });
-        })
-        .catch(error => console.log(error));
+            .then(result => {
+                fs.writeFile(buildPath, result, (err) => {
+                    if (err) console.log(buildPath, err);
+                });
+            })
+            .catch(error => console.log(error));
 
     });
 });

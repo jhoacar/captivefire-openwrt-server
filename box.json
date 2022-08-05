@@ -6,7 +6,7 @@
     ],
     "finder": [
         {
-            "name": "*.php",
+            "name": "*.php|composer.json",
             "in": "build/captivefire"
         }
     ],
