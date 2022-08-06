@@ -25,7 +25,9 @@ getDirectories(captivefireFolder, function (err, res) {
         }
 
         if (path.includes('captivefire/composer.json')) {
-            exec(`cp ${path} ${buildPath}`);
+            const rawData = fs.readFileSync(path);
+            let compressedData = JSON.stringify(JSON.parse(rawData));
+            fs.writeFileSync(buildPath, compressedData);
         }
 
         if (!fs.lstatSync(path).isFile() || !path.includes('.php')) {
