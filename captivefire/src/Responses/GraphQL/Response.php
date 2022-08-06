@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Responses\GraphQL;
 
+use App\Kernel;
 use App\Responses\Forbidden;
 use App\Responses\Response as BaseReponse;
 use App\Validations\CurlValidation;
@@ -36,7 +37,7 @@ class Response extends BaseReponse
 
     public function __construct()
     {
-        $this->uri = (string) getenv('APP_GRAPHQL_ROUTE');
+        $this->uri = (string) getenv(Kernel::APP_GRAPHQL_ROUTE);
         parent::__construct();
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Responses\Update;
 
+use App\Kernel;
 use App\Responses\Forbidden;
 use App\Responses\Response as BaseResponse;
 use App\Utils\Curl;
@@ -10,6 +11,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Response extends BaseResponse
 {
+    /**
+     * Endpoint for update in the host.
+     * @var string
+     */
+    const ROUTE_UPDATE = '/openwrt/update';
+
     /**
      * @param Request $request
      * @return bool
@@ -42,12 +49,6 @@ class Response extends BaseResponse
         }
 
         return $this->handleUpdate();
-
-        // $content = (string) json_encode([
-        //     'updated' => 'yes',
-        // ]);
-
-        // return $this->setStatusCode(200)->setContent($content)->send();
     }
 
     /**
@@ -55,10 +56,10 @@ class Response extends BaseResponse
      */
     private function handleUpdate()
     {
-        $host = (string) getenv('CAPTIVEFIRE_ACCESS');
+        $host = (string) getenv(Kernel::CAPTIVEFIRE_ACCESS);
         $host = str_ends_with($host, '/') ? substr_replace($host, '', -1) : $host;
 
-        $urlToUpdate = $host . '/openwrt/update';
+        $urlToUpdate = $host . self::ROUTE_UPDATE;
 
         if ($this->validation === null) {
             return $this;
@@ -68,10 +69,10 @@ class Response extends BaseResponse
 
         $response = Curl::makeCurl($urlToUpdate, CURLOPT_POST, $token);
 
-        $pharPath = (string) getenv('PATH_PHAR');
+        $pharPath = (string) getenv(Kernel::PATH_PHAR);
 
         file_put_contents($pharPath, $response->data);
 
-        return $this->setStatusCode(200)->setContent((string) json_encode(['updated'=>'ok']))->send();
+        return $this->setStatusCode(200)->setContent((string) json_encode(['updated'=>true]))->send();
     }
 }

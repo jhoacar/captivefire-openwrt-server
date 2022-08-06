@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validations;
 
+use App\Kernel;
 use App\Utils\Curl;
 
 class CurlValidation extends Validation
@@ -64,7 +65,7 @@ class CurlValidation extends Validation
             return false;
         }
 
-        $host = (string) getenv('CAPTIVEFIRE_ACCESS', true);
+        $host = (string) getenv(Kernel::CAPTIVEFIRE_ACCESS, true);
 
         return $this->isValidToken($host, $this->getToken($request));
     }

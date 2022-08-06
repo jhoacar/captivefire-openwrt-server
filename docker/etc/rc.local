@@ -3,13 +3,11 @@
 # If is a docker container, it takes about 1 minute
 #!/bin/sh
 
-function setPhpIniConfiguration()
-{
+function setPhpIniConfiguration(){
     sed -i "s/$1 = .*/$1 = $2/" /etc/php.ini
 }
 
 function setPhpIniDocRoot(){
-    # setPhpIniConfiguration "doc\_root" "\/app\/public"
     setPhpIniConfiguration "doc\_root" " "
 }
 
@@ -24,6 +22,5 @@ function disableLuciApp(){
 }
 
 setPhpIniDocRoot
-disableSSHAccess
 
 exit 0

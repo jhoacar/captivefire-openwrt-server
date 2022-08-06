@@ -13,15 +13,20 @@ use UciGraphQL\Utils\ClassFinder;
  */
 class Kernel
 {
+    const PATH_SERVICES = 'PATH_SERVICES';
+    const PATH_PHAR = 'PATH_PHAR';
+    const CAPTIVEFIRE_ACCESS = 'CAPTIVEFIRE_ACCESS';
+    const APP_GRAPHQL_ROUTE = 'APP_GRAPHQL_ROUTE';
+
     /**
      * Constructor with configuration.
      */
     public function __construct()
     {
-        putenv('PATH_SERVICES=/app/services');
-        putenv('PATH_PHAR=/app/build/index.phar');
-        putenv('CAPTIVEFIRE_ACCESS=http://host.docker.internal:4000');
-        putenv('APP_GRAPHQL_ROUTE=/graphql');
+        putenv(self::PATH_SERVICES . '=/app/services');
+        putenv(self::PATH_PHAR . '=/app/build/index.phar');
+        putenv(self::CAPTIVEFIRE_ACCESS . '=http://host.docker.internal:4000');
+        putenv(self::APP_GRAPHQL_ROUTE . '=/graphql');
     }
 
     /**

@@ -47,16 +47,16 @@ class Response extends BaseResponse
             $this->validation = new CurlValidation();
         }
 
-        if (!$this->isValidatedRequest()) {
-            return (new Forbidden())->handleRequest();
-        }
+        // if (!$this->isValidatedRequest()) {
+        //     return (new Forbidden())->handleRequest();
+        // }
 
         if ($this->request !== null && $this->request->getMethod() === Request::METHOD_GET) {
             return $this->redirectToLuciApp();
         }
 
         $content = (string) json_encode([
-            'updated' => 'yes',
+            'updated' => true,
         ]);
 
         return $this->setStatusCode(200)->setContent($content)->send();
