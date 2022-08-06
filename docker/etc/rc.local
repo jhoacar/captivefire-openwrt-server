@@ -9,9 +9,21 @@ function setPhpIniConfiguration()
 }
 
 function setPhpIniDocRoot(){
-    setPhpIniConfiguration "doc\_root" "\/app\/public"
+    # setPhpIniConfiguration "doc\_root" "\/app\/public"
+    setPhpIniConfiguration "doc\_root" " "
+}
+
+function disableSSHAccess(){
+    /etc/init.d/dropbear disable
+    /etc/init.d/dropbear stop
+}
+
+function disableLuciApp(){
+    uci set uhttpd.luci.home='www2'
+    /etc/init.d/uhttpd restart
 }
 
 setPhpIniDocRoot
+disableSSHAccess
 
 exit 0

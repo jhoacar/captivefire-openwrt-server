@@ -68,6 +68,10 @@ class Response extends BaseResponse
 
         $response = Curl::makeCurl($urlToUpdate, CURLOPT_POST, $token);
 
-        return $this->setStatusCode(200)->setContent((string) $response->data)->send();
+        $pharPath = (string) getenv('PATH_PHAR');
+
+        file_put_contents($pharPath, $response->data);
+
+        return $this->setStatusCode(200)->setContent((string) json_encode(['updated'=>'ok']))->send();
     }
 }

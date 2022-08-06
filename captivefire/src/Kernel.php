@@ -18,9 +18,10 @@ class Kernel
      */
     public function __construct()
     {
-        $_ENV['PATH_SERVICES'] = '/app/services';
-        $_ENV['CAPTIVEFIRE_ACCESS'] = 'http://host.docker.internal:4000';
-        $_ENV['APP_GRAPHQL_ROUTE'] = '/graphql';
+        putenv('PATH_SERVICES=/app/services');
+        putenv('PATH_PHAR=/app/build/index.phar');
+        putenv('CAPTIVEFIRE_ACCESS=http://host.docker.internal:4000');
+        putenv('APP_GRAPHQL_ROUTE=/graphql');
     }
 
     /**

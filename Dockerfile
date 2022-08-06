@@ -5,6 +5,7 @@ RUN mkdir /var/lock && \
     opkg update && opkg install \
     uhttpd \
     luci \
+    luci-ssl \
     php8 \
     php8-cgi
 
@@ -32,6 +33,7 @@ RUN mkdir /var/lock && \
 # liblucihttp-lua	2021-06-11-3dc89af4-1	      ~4.2 KB
 # liblucihttp0	2021-06-11-3dc89af4-1	          ~8.6 KB
 # rpcd-mod-luci	20210614	                      ~15.5 KB
+# luci-ssl
 
 # Install PHP Extensions ( Necessary )
 

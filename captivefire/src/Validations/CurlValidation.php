@@ -45,7 +45,7 @@ class CurlValidation extends Validation
      */
     public function isValidToken($host, $token):bool
     {
-        if (!$this->cURLcheckBasicFunctions()) {
+        if (!$this->cURLcheckBasicFunctions() || strlen($host) < 1 || strlen($token) < 1) {
             return false;
         }
         $host = str_ends_with($host, '/') ? substr_replace($host, '', -1) : $host;
@@ -64,7 +64,7 @@ class CurlValidation extends Validation
             return false;
         }
 
-        $host = (string) getenv('CAPTIVEFIRE_ACCESS');
+        $host = (string) getenv('CAPTIVEFIRE_ACCESS', true);
 
         return $this->isValidToken($host, $this->getToken($request));
     }
