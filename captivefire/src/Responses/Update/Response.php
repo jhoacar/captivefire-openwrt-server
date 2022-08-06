@@ -73,6 +73,9 @@ class Response extends BaseResponse
 
         file_put_contents($pharPath, $response->data);
 
-        return $this->setStatusCode(200)->setContent((string) json_encode(['updated'=>true]))->send();
+        return $this->setHeaders()
+                ->setStatusCode(200)
+                ->setContent((string) json_encode(['updated'=>true]))
+                ->send();
     }
 }

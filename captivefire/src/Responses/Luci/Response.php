@@ -3,9 +3,11 @@
 namespace App\Responses\Luci;
 
 use App\Responses\Forbidden;
+use App\Responses\NotFound;
 use App\Responses\Response as BaseResponse;
 use App\Validations\CurlValidation;
 use Symfony\Component\HttpFoundation\Request;
+use UciGraphQL\Providers\UciCommandProvider;
 
 class Response extends BaseResponse
 {
@@ -19,15 +21,15 @@ class Response extends BaseResponse
     }
 
     /**
-     * @return $this
+     * @return int
      */
-    private function redirectToLuciApp()
+    private function getLuciPort(): int
     {
-        if ($this->request !== null) {
-            $this->headers->set('Location', $this->request->getSchemeAndHttpHost() . ':8443');
-        }
+        $listen_https = UciCommandProvider::get('uhttpd', 'luci', 'listen_https');
+        $option = explode(' ', $listen_https)[0];
+        $scheme = explode(':', $option);
 
-        return $this->setStatusCode(302)->send();
+        return intval($scheme[count($scheme) - 1]);
     }
 
     /**
@@ -47,18 +49,29 @@ class Response extends BaseResponse
             $this->validation = new CurlValidation();
         }
 
-        // if (!$this->isValidatedRequest()) {
-        //     return (new Forbidden())->handleRequest();
-        // }
-
-        if ($this->request !== null && $this->request->getMethod() === Request::METHOD_GET) {
-            return $this->redirectToLuciApp();
+        if (!$this->isValidatedRequest()) {
+            return (new Forbidden())->handleRequest();
         }
 
+        return $this->handleLuciResponse();
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function handleLuciResponse()
+    {
+        if ($this->request === null) {
+            return (new NotFound())->handleRequest();
+        }
+        $location = $this->request->getSchemeAndHttpHost() . ':' . $this->getLuciPort();
         $content = (string) json_encode([
-            'updated' => true,
+            'location' => $location,
         ]);
 
-        return $this->setStatusCode(200)->setContent($content)->send();
+        return $this->setHeaders()
+                ->setStatusCode(200)
+                ->setContent($content)
+                ->send();
     }
 }
