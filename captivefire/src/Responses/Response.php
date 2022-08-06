@@ -31,7 +31,7 @@ abstract class Response extends BaseResponse
      * Load Json Response.
      * @return void
      */
-    private function setJsonHeaders(): void
+    protected function setJsonHeaders(): void
     {
         $this->headers->set('Cache-Control', 'no-cache');
         $this->headers->set('Content-Type', 'application/json');
@@ -41,7 +41,7 @@ abstract class Response extends BaseResponse
      * Load the CORS policy.
      * @return void
      */
-    private function setCorsHeaders(): void
+    protected function setCorsHeaders(): void
     {
         /* CORS Policy */
         $this->headers->set('Access-Control-Allow-Origin', '*');

@@ -20,6 +20,9 @@ class Info extends Response
      */
     public function handleRequest()
     {
+        $this->setCorsHeaders();
+        $this->sendHeaders();
+
         phpinfo(INFO_ALL ^ INFO_VARIABLES);
 
         return null;
