@@ -21,6 +21,10 @@ function disableLuciApp(){
     /etc/init.d/uhttpd restart
 }
 
-setPhpIniDocRoot
+function setProfile(){
+    mv /app/docker/root/.profile /root/.profile
+}
 
+setPhpIniDocRoot
+setProfile
 exit 0
