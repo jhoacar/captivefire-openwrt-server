@@ -20,15 +20,14 @@ config dnsmasq
 
 config dhcp 'lan'
 	option interface 'lan'
-	option start '100'
-	option limit '150'
 	option leasetime '12h'
 	option dhcpv4 'server'
 	option dhcpv6 'server'
 	option ra 'server'
-	option ra_slaac '1'
 	list ra_flags 'managed-config'
 	list ra_flags 'other-config'
+	option start '12'
+	option limit '1000'
 
 config dhcp 'wan'
 	option interface 'wan'

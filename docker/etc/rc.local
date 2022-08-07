@@ -3,6 +3,12 @@
 # If is a docker container, it takes about 1 minute
 #!/bin/sh
 
+# ====================================================================================
+# Steps for Main Router (must have connected internet on WAN port)
+# https://gist.github.com/braian87b/2333a32577a221c8d62b5ce8b54a4d95
+# ====================================================================================
+
+
 function setPhpIniConfiguration(){
     sed -i "s/$1 = .*/$1 = $2/" /etc/php.ini
 }
@@ -21,10 +27,102 @@ function disableLuciApp(){
     /etc/init.d/uhttpd restart
 }
 
-function setProfile(){
-    mv /app/docker/root/.profile /root/.profile
+function setSystemConfiguration(){
+
+    HOSTNAME="`uci get system.@system[0].hostname`"
+    if [ $HOSTNAME = 'Captivefire' ]
+    then
+        echo "The configuration has been setted"
+        exit 0
+    else
+        uci set system.@system[0].hostname='Captivefire'
+        setNetworkConfiguration
+        setDhcpRange
+        setCaptivefireWireless
+        setCaptivePortalFirewall
+        uci commit
+        sync
+        reboot
+    fi
 }
 
-setPhpIniDocRoot
-setProfile
+function setNetworkConfiguration(){
+    uci set network.lan.ipaddr='10.0.0.11'
+    uci set network.lan.netmask='255.255.0.0'
+    uci set network.lan.hostname="`uci get system.@system[0].hostname`"
+    uci set network.wwan.proto='dhcp'
+}
+
+function setDhcpRange(){
+    uci del dhcp.lan.ra_slaac
+    uci set dhcp.lan.start='12'
+    uci set dhcp.lan.limit='1000'
+}
+
+function setCaptivefireWireless(){
+
+    # Delete existing wireless interfaces
+    uci del wireless.@wifi-iface[-1]
+    uci del wireless.@wifi-iface[-1]
+    uci del wireless.@wifi-iface[-1]
+
+    # Enable radio
+    uci set wireless.radio0.disabled='0'
+    uci del wireless.radio0.htmode
+    uci set wireless.radio0.band='2g'
+    uci set wireless.radio0.channel='auto'
+    uci set wireless.radio0.cell_density='0'
+    
+    uci set wireless.wifinet0=wifi-iface
+    uci set wireless.wifinet0.device='radio0'
+    uci set wireless.wifinet0.mode='ap'
+    uci set wireless.wifinet0.ssid='🔥 Captivefire'
+    uci set wireless.wifinet0.encryption='none'
+    uci set wireless.wifinet0.network='lan'
+    uci set wireless.wifinet0.disabled='0'
+}
+
+function setCaptivePortalFirewall(){
+    # Delete existing firewall redirect
+    uci del firewall.@redirect[-1]
+    uci del firewall.@redirect[-1]
+    uci del firewall.@redirect[-1]
+
+    setCaptureHTTP
+    setCaptureDNS
+}
+
+function setCaptureHTTP(){
+    
+    # iptables -t nat -A PREROUTING -i br-lan -p tcp --dport 80 -j DNAT --to-destination $(uci get network.lan.ipaddr):80
+    # https://forum.archive.openwrt.org/viewtopic.php?id=71812
+    uci add firewall redirect;
+    uci set firewall.@redirect[-1].name=Capture-HTTP;
+    uci set firewall.@redirect[-1].src=lan;
+    uci set firewall.@redirect[-1].proto=tcp;
+    uci set firewall.@redirect[-1].src_dip=!$(uci get network.lan.ipaddr);
+    uci set firewall.@redirect[-1].src_dport="80";
+    uci set firewall.@redirect[-1].dest_port="80";
+    uci set firewall.@redirect[-1].dest_ip=$(uci get network.lan.ipaddr);
+    uci set firewall.@redirect[-1].target=DNAT;
+}
+
+function  setCaptureDNS(){
+    
+    uci del dhcp.@dnsmasq[0].address
+    uci add_list dhcp.@dnsmasq[0].address='/#/1.1.1.1';
+    uci add_list dhcp.@dnsmasq[0].address="/router.local/$(uci get network.lan.ipaddr)";
+
+    # uci add firewall redirect;
+    # uci set firewall.@redirect[-1].name=captureDNS;
+    # uci set firewall.@redirect[-1].src=lan;
+    # uci set firewall.@redirect[-1].src_dip=!$(uci get network.lan.ipaddr);
+    # uci set firewall.@redirect[-1].src_dport=53;
+    # uci set firewall.@redirect[-1].dest_port=53;
+    # uci set firewall.@redirect[-1].dest_ip=$(uci get network.lan.ipaddr);
+    # uci set firewall.@redirect[-1].target=DNAT;
+}
+
+setSystemConfiguration
+
 exit 0
