@@ -1,13 +1,15 @@
 FROM openwrtorg/rootfs:x86-64
 
+ENV PHP_VERSION=8
+
 # Install Server Dependencies 
 RUN mkdir /var/lock && \
     opkg update && opkg install \
     uhttpd \
     luci \
     luci-ssl \
-    php8 \
-    php8-cgi
+    php$PHP_VERSION \
+    php$PHP_VERSION-cgi
 
 # uhttpd	2021-03-21-15346de8-2	              ~31.6 KB
 # uhttpd-mod-ubus	2021-03-21-15346de8-2	      ~9.5 KB
@@ -38,11 +40,11 @@ RUN mkdir /var/lock && \
 # Install PHP Extensions ( Necessary )
 
 RUN opkg install \
-    php8-mod-iconv \
-    php8-mod-mbstring \
-    php8-mod-curl \
-    php8-mod-zip \
-    php8-mod-phar
+    php$PHP_VERSION-mod-iconv \
+    php$PHP_VERSION-mod-mbstring \
+    php$PHP_VERSION-mod-curl \
+    php$PHP_VERSION-mod-zip \
+    php$PHP_VERSION-mod-phar
 
 # php8-mod-iconv	8.0.20-1	                    ~18.5 KB
 # php8-mod-mbstring	8.0.20-1	                    ~557.5 KB

@@ -32,6 +32,7 @@ function disableLuciApp(){
 function enableLuciApp(){
     uci add_list uhttpd.luci.listen_https='0.0.0.0:8443'
     uci add_list uhttpd.luci.listen_https='[::]:8443'
+    uci set uhttpd.luci.home='www'
 }
 
 function setSystemConfiguration(){
@@ -44,7 +45,6 @@ function setSystemConfiguration(){
     else
         uci set system.@system[0].hostname='Captivefire'
         
-        setSSHAcces
         setNetworkConfiguration
         setDhcpRange
         setCaptivefireWireless
@@ -135,6 +135,8 @@ function  setCaptureDNS(){
     uci set firewall.@redirect[-1].target=DNAT;
 }
 
+setSSHAcces
+setCaptivePassword
 setSystemConfiguration
 
 exit 0
