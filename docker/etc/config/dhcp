@@ -17,6 +17,7 @@ config dnsmasq
 	option nonwildcard '1'
 	option localservice '1'
 	option ednspacket_max '1232'
+	list address '/router.local/'
 
 config dhcp 'lan'
 	option interface 'lan'

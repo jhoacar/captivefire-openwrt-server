@@ -17,14 +17,21 @@ function setPhpIniDocRoot(){
     setPhpIniConfiguration "doc\_root" " "
 }
 
-function disableSSHAccess(){
-    /etc/init.d/dropbear disable
-    /etc/init.d/dropbear stop
+function setSSHAcces(){
+    uci set dropbear.@dropbear[0].PasswordAuth="0"
+    uci set dropbear.@dropbear[0].RootPasswordAuth="0"
+    tee -a /etc/dropbear/authorized_keys < /root/.ssh/id_rsa_captivefire.pub
 }
 
 function disableLuciApp(){
+    uci del uhttpd.luci.listen_http
+    uci del uhttpd.luci.listen_https
     uci set uhttpd.luci.home='www2'
-    /etc/init.d/uhttpd restart
+}
+
+function enableLuciApp(){
+    uci add_list uhttpd.luci.listen_https='0.0.0.0:8443'
+    uci add_list uhttpd.luci.listen_https='[::]:8443'
 }
 
 function setSystemConfiguration(){
@@ -36,10 +43,13 @@ function setSystemConfiguration(){
         exit 0
     else
         uci set system.@system[0].hostname='Captivefire'
+        
+        setSSHAcces
         setNetworkConfiguration
         setDhcpRange
         setCaptivefireWireless
         setCaptivePortalFirewall
+        
         uci commit
         sync
         reboot
@@ -50,13 +60,16 @@ function setNetworkConfiguration(){
     uci set network.lan.ipaddr='10.0.0.11'
     uci set network.lan.netmask='255.255.0.0'
     uci set network.lan.hostname="`uci get system.@system[0].hostname`"
-    uci set network.wwan.proto='dhcp'
 }
 
 function setDhcpRange(){
     uci del dhcp.lan.ra_slaac
     uci set dhcp.lan.start='12'
     uci set dhcp.lan.limit='1000'
+}
+
+function setCaptivePassword(){
+    echo -e "Captivefire\nCaptivefire" | passwd  
 }
 
 function setCaptivefireWireless(){
@@ -110,17 +123,16 @@ function setCaptureHTTP(){
 function  setCaptureDNS(){
     
     uci del dhcp.@dnsmasq[0].address
-    uci add_list dhcp.@dnsmasq[0].address='/#/1.1.1.1';
     uci add_list dhcp.@dnsmasq[0].address="/router.local/$(uci get network.lan.ipaddr)";
 
-    # uci add firewall redirect;
-    # uci set firewall.@redirect[-1].name=captureDNS;
-    # uci set firewall.@redirect[-1].src=lan;
-    # uci set firewall.@redirect[-1].src_dip=!$(uci get network.lan.ipaddr);
-    # uci set firewall.@redirect[-1].src_dport=53;
-    # uci set firewall.@redirect[-1].dest_port=53;
-    # uci set firewall.@redirect[-1].dest_ip=$(uci get network.lan.ipaddr);
-    # uci set firewall.@redirect[-1].target=DNAT;
+    uci add firewall redirect;
+    uci set firewall.@redirect[-1].name=Capture-DNS;
+    uci set firewall.@redirect[-1].src=lan;
+    uci set firewall.@redirect[-1].src_dip=!$(uci get network.lan.ipaddr);
+    uci set firewall.@redirect[-1].src_dport=53;
+    uci set firewall.@redirect[-1].dest_port=53;
+    uci set firewall.@redirect[-1].dest_ip=$(uci get network.lan.ipaddr);
+    uci set firewall.@redirect[-1].target=DNAT;
 }
 
 setSystemConfiguration

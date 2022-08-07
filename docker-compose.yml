@@ -21,16 +21,19 @@ services:
     # command: /app/docker/start-container.sh 
     restart: always
     ports:
-      - '8022:22'
+      - '8022:22' # SSH Connection
+      # Luci SSH Tunnel
+      # ssh -L127.0.0.1:8080:127.0.0.1:8443 -p8022 root@localhost
       - '${APP_HTTP_PORT:-8000}:80' # HTTP Captivefire
       - '${APP_HTTPS_PORT:-443}:${APP_HTTPS_PORT:-443}' # HTTPS Captivefire
-      - '${LUCI_HTTPS_PORT:-8443}:${LUCI_HTTPS_PORT:-8443}' # Luci App
-      - '8008:8008'
+      # - '${LUCI_HTTPS_PORT:-8443}:${LUCI_HTTPS_PORT:-8443}' # Luci App
     volumes:
       - ./docker/etc/config:/etc/config
       - ./docker/etc/crontabs:/etc/crontabs
       - ./docker/etc/php.ini:/etc/php.ini
       - ./docker/etc/rc.local:/etc/rc.local
+      - ./docker/root/ssh:/root/.ssh
+      - ./banner.txt:/etc/banner
       - .:/app
     extra_hosts:
       - "host.docker.internal:host-gateway"
