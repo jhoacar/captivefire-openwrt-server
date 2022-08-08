@@ -6,6 +6,7 @@ ENV PHP_VERSION=8
 RUN mkdir /var/lock && \
     opkg update && opkg install \
     uhttpd \
+    uhttpd-mod-lua \
     luci \
     luci-ssl \
     php$PHP_VERSION \
@@ -44,7 +45,8 @@ RUN opkg install \
     php$PHP_VERSION-mod-mbstring \
     php$PHP_VERSION-mod-curl \
     php$PHP_VERSION-mod-zip \
-    php$PHP_VERSION-mod-phar
+    php$PHP_VERSION-mod-phar \
+    php$PHP_VERSION-mod-filter \
 
 # php8-mod-iconv	8.0.20-1	                    ~18.5 KB
 # php8-mod-mbstring	8.0.20-1	                    ~557.5 KB

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Responses\NotFound;
+use App\Responses\Portal\Response as PortalResponse;
 use App\Responses\Response;
 use App\Responses\ServerError;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,8 @@ use UciGraphQL\Utils\ClassFinder;
  */
 class Kernel
 {
+    const PATH_BUILD = 'PATH_BUILD';
+    const PATH_URL_FILE = 'PATH_URL_FILE';
     const PATH_SERVICES = 'PATH_SERVICES';
     const PATH_PHAR = 'PATH_PHAR';
     const CAPTIVEFIRE_ACCESS = 'CAPTIVEFIRE_ACCESS';
@@ -23,6 +26,8 @@ class Kernel
      */
     public function __construct()
     {
+        putenv(self::PATH_BUILD . '=/app/build');
+        putenv(self::PATH_URL_FILE . '=/app/build/url.txt');
         putenv(self::PATH_SERVICES . '=/app/services');
         putenv(self::PATH_PHAR . '=/app/build/index.phar');
         putenv(self::CAPTIVEFIRE_ACCESS . '=http://host.docker.internal:4000');
@@ -95,6 +100,10 @@ class Kernel
     private function handleRequest()
     {
         $request = Request::createFromGlobals();
+
+        if (!$request->isSecure()) {
+            return (new PortalResponse())->handleRequest();
+        }
 
         $classes = ClassFinder::getClassesInNamespace(__DIR__ . '/../', 'App\\Responses');
         foreach ($classes as $class) {

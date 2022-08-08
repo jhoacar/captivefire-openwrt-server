@@ -1,9 +1,0 @@
-
-config wifi-iface 'wifinet0'
-	option device 'radio0'
-	option mode 'ap'
-	option ssid '🔥 Captivefire'
-	option encryption 'none'
-	option network 'lan'
-	option disabled '0'
-

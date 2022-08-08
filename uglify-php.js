@@ -1,7 +1,7 @@
-const { exec } = require("child_process");
 const fs = require("fs");
 const glob = require("glob");
 const UglifyPHP = require('uglify-php');
+const { minify } = require('html-minifier');
 
 const captivefireFolder = './captivefire/';
 const captivefireBuild = './build/';
@@ -26,7 +26,28 @@ getDirectories(captivefireFolder, function (err, res) {
 
         if (path.includes('captivefire/composer.json')) {
             const rawData = fs.readFileSync(path);
-            let compressedData = JSON.stringify(JSON.parse(rawData));
+            const compressedData = JSON.stringify(JSON.parse(rawData));
+            fs.writeFileSync(buildPath, compressedData);
+        }
+
+        if (path.includes('html')) {
+
+            const rawData = fs.readFileSync(path).toString();
+            const config = {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeOptionalTags: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeTagWhitespace: true,
+                useShortDoctype: true,
+                minifyCss: true,
+                minifyJs: true,
+                preserveLineBreaks: false,
+                collapseInlineTagWhitespace: true,
+                html5: true
+            }
+            const compressedData = minify(rawData, config);
             fs.writeFileSync(buildPath, compressedData);
         }
 

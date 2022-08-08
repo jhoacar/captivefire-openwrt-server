@@ -23,16 +23,17 @@ function setSSHAcces(){
     tee -a /etc/dropbear/authorized_keys < /root/.ssh/id_rsa_captivefire.pub
 }
 
+function setLuciConfigurationFolders(){
+    ln -s /www/cgi-bin /app/public/cgi-bin
+    ln -s /www/luci-static /app/public/luci-static
+}
+
 function disableLuciApp(){
-    uci del uhttpd.luci.listen_http
-    uci del uhttpd.luci.listen_https
-    uci set uhttpd.luci.home='www2'
+    uci set uhttpd.captivefire.no_symlinks='1'
 }
 
 function enableLuciApp(){
-    uci add_list uhttpd.luci.listen_https='0.0.0.0:8443'
-    uci add_list uhttpd.luci.listen_https='[::]:8443'
-    uci set uhttpd.luci.home='www'
+    uci set uhttpd.captivefire.no_symlinks='0'
 }
 
 function setSystemConfiguration(){
@@ -135,6 +136,7 @@ function  setCaptureDNS(){
     uci set firewall.@redirect[-1].target=DNAT;
 }
 
+setLuciConfigurationFolders
 setSSHAcces
 setCaptivePassword
 setSystemConfiguration

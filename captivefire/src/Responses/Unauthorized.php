@@ -2,7 +2,7 @@
 
 namespace App\Responses;
 
-class Forbidden extends Response
+class Unauthorized extends Response
 {
     /**
      * @inheritdoc
@@ -21,6 +21,6 @@ class Forbidden extends Response
             'error' => 'You dont have access',
         ]);
 
-        return $this->setHeaders()->setStatusCode(403)->setContent($content)->send();
+        return $this->setHeaders()->setStatusCode(401)->setContent($content)->send();
     }
 }

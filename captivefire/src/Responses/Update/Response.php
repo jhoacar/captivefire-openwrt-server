@@ -3,8 +3,8 @@
 namespace App\Responses\Update;
 
 use App\Kernel;
-use App\Responses\Forbidden;
 use App\Responses\Response as BaseResponse;
+use App\Responses\Unauthorized;
 use App\Utils\Curl;
 use App\Validations\CurlValidation;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +45,7 @@ class Response extends BaseResponse
         }
 
         if (!$this->isValidatedRequest()) {
-            return (new Forbidden())->handleRequest();
+            return (new Unauthorized())->handleRequest();
         }
 
         return $this->handleUpdate();

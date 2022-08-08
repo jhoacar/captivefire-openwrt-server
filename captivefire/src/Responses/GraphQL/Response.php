@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Responses\GraphQL;
 
 use App\Kernel;
-use App\Responses\Forbidden;
 use App\Responses\Response as BaseReponse;
+use App\Responses\Unauthorized;
 use App\Validations\CurlValidation;
 use App\Validations\Validation;
 use GraphQL\GraphQL;
@@ -130,7 +130,7 @@ class Response extends BaseReponse
         }
 
         if (!$this->isValidatedRequest()) {
-            return (new Forbidden())->handleRequest();
+            return (new Unauthorized())->handleRequest();
         }
 
         $provider = null;

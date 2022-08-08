@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/jhoacar/captivefire-openwrt-server#readme",
   "dependencies": {
+    "clean-css": "^5.3.1",
     "glob": "^8.0.3",
+    "html-minifier": "^4.0.0",
     "uglify-php": "^1.0.7"
   }
 }
